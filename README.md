@@ -4,6 +4,8 @@ Unofficial Python driver and browser-based designer for the **Picksmart NEMR 2.1
 
 We captured real BLE traffic with an HCI sniffer, reconstructed the actual wire protocol byte-by-byte.
 
+![Picksmart NEMR e-ink tag showing black text, red text, an image, and a QR code](assets/demo.jpg)
+
 ---
 
 ## Features

@@ -16,7 +16,6 @@ We captured real BLE traffic with an HCI sniffer, reconstructed the actual wire 
 | **Three colors** | Per-element color selection: black, red, white |
 | **Layer preview** | Live split-view of black plane and red plane before sending |
 | **CLI test tool** | Scan, send test patterns, push image files, clear display |
-| **ESP32 support** | Works with an ESP32 flashed as a BT HCI controller (no dedicated dongle needed) |
 | **Configurable** | BLE address and HTTP port via CLI flags or environment variables |
 
 ---

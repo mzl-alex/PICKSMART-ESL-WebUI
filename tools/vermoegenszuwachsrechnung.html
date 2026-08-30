@@ -215,6 +215,140 @@ button.ghost:hover{color:var(--accent); border-color:var(--accent)}
 .legal{color:var(--ink-faint); font-size:12px; margin-top:22px; max-width:70ch; line-height:1.5}
 .legal code{font-family:var(--mono); font-size:11.5px}
 
+/* ---------- Dokumentenausgabe ---------- */
+.docbtns{display:grid; grid-template-columns:1fr 1fr; gap:8px}
+.docbtn{
+  display:flex; flex-direction:column; gap:3px; align-items:flex-start; text-align:left;
+  background:var(--card-2); border:1px solid var(--rule); border-radius:3px; padding:10px 11px;
+  cursor:pointer; color:var(--ink);
+}
+.docbtn:hover{border-color:var(--accent); background:var(--accent-soft)}
+.docbtn b{font-family:var(--disp); font-size:12.5px; font-weight:700}
+.docbtn span{font-size:11px; color:var(--ink-faint); line-height:1.35}
+textarea.tf{
+  background:var(--field); border:1px solid var(--rule); border-radius:3px; padding:7px 9px;
+  width:100%; min-height:70px; resize:vertical; font-family:var(--body); font-size:14px;
+}
+textarea.tf:hover{border-color:var(--rule-strong)}
+.chk{display:flex; gap:9px; align-items:flex-start; font-size:13.5px; color:var(--ink-soft); line-height:1.35}
+.chk input{margin-top:2px; flex:none}
+
+.docview{position:fixed; inset:0; z-index:60; background:rgba(9,13,20,.8); overflow:auto; display:none}
+body.doc-open{overflow:hidden}
+body.doc-open .docview{display:block}
+.docbar{
+  position:sticky; top:0; z-index:2; display:flex; gap:10px; align-items:center; flex-wrap:wrap;
+  background:var(--card); border-bottom:1px solid var(--rule); padding:10px 16px;
+}
+.docbar .name{font-family:var(--disp); font-weight:700; font-size:14px; margin-right:auto}
+.docbar .meta{font-size:12px; color:var(--ink-faint)}
+.warnchip{font-size:12px; color:var(--warn); border:1px solid var(--warn);
+  background:var(--warn-soft); border-radius:99px; padding:3px 10px}
+.stage{padding:22px 12px 70px; display:flex; justify-content:center}
+
+/* Das Schreiben selbst: bewusst einfarbig, unabhängig vom Theme */
+.sheet{
+  position:relative; width:210mm; min-height:297mm; background:#fff; color:#15181c;
+  padding:15mm 18mm 24mm 24mm; box-shadow:0 20px 60px -22px rgba(0,0,0,.75);
+  font-family:var(--body); font-size:10.2pt; line-height:1.5; text-align:left;
+}
+.sheet .fold, .sheet .punch{
+  position:absolute; left:7mm; width:6mm; height:0; border-top:.3mm solid #a8b0b9;
+}
+.sheet .f1{top:87mm}
+.sheet .f2{top:192mm}
+.sheet .punch{top:148.5mm; width:9mm; border-top-color:#828b95}
+.sheet h2{font-family:var(--disp); font-size:10.4pt; font-weight:700; letter-spacing:.01em;
+  margin:5mm 0 1.5mm; color:#15181c}
+.sheet p{margin:0 0 2.6mm}
+.sheet ul, .sheet ol{margin:0 0 3mm; padding-left:5mm}
+.sheet li{margin-bottom:1.2mm}
+.sheet b{font-weight:600}
+.sheet .small{font-size:8.6pt; color:#4a545f; line-height:1.45}
+
+.lh{display:flex; align-items:flex-start; justify-content:space-between; gap:6mm}
+.lh-l{display:flex; gap:4mm; align-items:center}
+.lh-l svg{flex:none; color:#15181c}
+.lh-t b{display:block; font-family:var(--disp); font-size:11.6pt; font-weight:800;
+  letter-spacing:.06em; text-transform:uppercase; line-height:1.15}
+.lh-t span{display:block; font-family:var(--disp); font-size:7.9pt; font-weight:600;
+  letter-spacing:.1em; text-transform:uppercase; color:#4a545f; margin-top:.8mm; white-space:nowrap}
+.lh-r{text-align:right; font-family:var(--mono); font-size:7.1pt; color:#4a545f; line-height:1.55;
+  white-space:nowrap}
+.lh-rule{height:0; border-top:.7mm solid #15181c; margin:2.5mm 0 0}
+.lh-rule + .lh-rule{border-top:.2mm solid #15181c; margin-top:.9mm}
+
+.addr-zone{display:flex; gap:8mm; margin-top:9mm; align-items:flex-start}
+.addr{width:85mm; flex:none; min-height:27mm}
+.addr .sender{font-size:7pt; color:#4a545f; border-bottom:.2mm solid #b9c0c8;
+  padding-bottom:1mm; margin-bottom:3mm}
+.addr .rcpt{white-space:pre-line; font-size:10.4pt; line-height:1.45}
+.info{margin-left:auto; font-size:8.8pt; min-width:62mm}
+.info > div{display:flex; gap:3mm; padding:.5mm 0}
+.info .dt{color:#4a545f; width:28mm; flex:none}
+.info .dd{font-family:var(--mono); font-size:8.4pt; font-variant-numeric:tabular-nums}
+
+.doc-kind{font-family:var(--disp); font-size:8pt; font-weight:700; letter-spacing:.2em;
+  text-transform:uppercase; color:#8a3227; margin:11mm 0 1.5mm}
+.doc-title{font-family:var(--disp); font-size:15pt; font-weight:800; letter-spacing:-.01em;
+  line-height:1.2; margin:0 0 1.5mm}
+.doc-sub{font-size:9.4pt; color:#4a545f; margin:0 0 6mm}
+.betreff{font-weight:600; margin:0 0 4mm}
+.doc-body{margin-top:2mm}
+
+table.fig{width:100%; border-collapse:collapse; margin:2mm 0 4mm; font-size:9.4pt;
+  font-variant-numeric:tabular-nums}
+table.fig th{font-family:var(--disp); font-size:7.8pt; font-weight:700; letter-spacing:.09em;
+  text-transform:uppercase; color:#4a545f; text-align:left; border-bottom:.35mm solid #15181c;
+  padding:1.2mm 2mm}
+table.fig th.r{text-align:right}
+table.fig td{padding:1.1mm 2mm; border-bottom:.2mm solid #d3d8de}
+table.fig td.r{text-align:right; font-family:var(--mono); font-size:9pt; white-space:nowrap}
+table.fig tr.sum td{border-top:.35mm solid #15181c; border-bottom:0; font-weight:600}
+table.fig tr.sum td.r{font-weight:600}
+table.fig tr.hi td{background:#f2f4f6; font-weight:700}
+table.fig tr.hi td.r{font-weight:700}
+
+.box{border:.35mm solid #15181c; padding:3mm 4mm; margin:0 0 4mm}
+.box.warn{border-color:#8a3227}
+.box h3{font-family:var(--disp); font-size:8pt; font-weight:700; letter-spacing:.16em;
+  text-transform:uppercase; color:#4a545f; margin:0 0 1.5mm}
+.termin{display:flex; gap:9mm; font-size:11pt; font-family:var(--mono)}
+.termin b{display:block; font-family:var(--disp); font-size:7.6pt; font-weight:700;
+  letter-spacing:.12em; text-transform:uppercase; color:#4a545f; margin-bottom:.8mm}
+
+.tick{display:flex; gap:2.5mm; align-items:flex-start; margin-bottom:1.4mm}
+.tick i{flex:none; width:3.4mm; height:3.4mm; border:.3mm solid #15181c; margin-top:.7mm;
+  font-style:normal; text-align:center; line-height:3mm; font-size:8pt}
+.tick i.on::before{content:"X"}
+
+.sigs{display:flex; gap:12mm; margin-top:9mm}
+.sig{flex:1}
+.sig-line{border-top:.3mm solid #15181c; margin-bottom:1.2mm}
+.sig-name{font-size:9.2pt; font-weight:600}
+.sig-role{font-size:8.2pt; color:#4a545f}
+.stempel{
+  width:26mm; height:26mm; border:.35mm dashed #9aa3ad; border-radius:50%; flex:none;
+  display:grid; place-items:center; text-align:center; font-size:6.6pt; color:#8a929b;
+  letter-spacing:.08em; text-transform:uppercase; line-height:1.3;
+}
+.cut{border-top:.3mm dashed #9aa3ad; margin:8mm 0 3mm; position:relative}
+.cut span{position:absolute; top:-2.6mm; left:0; background:#fff; padding-right:2mm;
+  font-size:7.2pt; color:#8a929b; letter-spacing:.1em; text-transform:uppercase}
+
+.sheet-foot{
+  position:absolute; left:24mm; right:18mm; bottom:9mm; border-top:.35mm solid #c3c9d0;
+  padding-top:2.2mm; display:flex; gap:7mm; font-size:7.2pt; color:#5a6470; line-height:1.45;
+}
+.sheet-foot div{flex:1}
+.sheet-foot b{display:block; font-weight:600; color:#3d464f}
+.sheet-foot .rp{text-align:right; flex:none; max-width:52mm}
+
+@media (max-width:860px){
+  .docbtns{grid-template-columns:1fr}
+  .stage{padding:14px 6px 60px}
+}
+
 @media (max-width:620px){
   .wrap{padding:0 14px 60px}
   .masthead{gap:18px; padding-top:20px}
@@ -228,6 +362,14 @@ button.ghost:hover{color:var(--accent); border-color:var(--accent)}
 
 @media print{
   body{background:#fff}
+  body.doc-open .wrap{display:none !important}
+  body.doc-open .docview{position:static; display:block; background:#fff; overflow:visible}
+  body.doc-open .docbar{display:none}
+  body.doc-open .stage{display:block; padding:0}
+  .sheet{zoom:1 !important; box-shadow:none; margin:0; width:210mm; min-height:0}
+  .sheet table.fig, .sheet .box, .sheet .sigs, .sheet .termin{break-inside:avoid}
+  .sheet h2{break-after:avoid}
+  .sheet .betreff{break-after:avoid}
   .tools,.addrow,.del,.stamp{display:none}
   .grid{grid-template-columns:1fr}
   section.card{break-inside:avoid; box-shadow:none}
@@ -409,6 +551,41 @@ button.ghost:hover{color:var(--accent); border-color:var(--accent)}
     </div>
   </section>
 
+  <section class="card">
+    <header>
+      <div class="step">G</div>
+      <h2>Schreiben &amp; Zustellung</h2>
+      <div class="hint">Angaben für Briefkopf und Dokumente</div>
+    </header>
+    <div class="body">
+      <div class="dossier" style="margin:0 0 14px; padding:0; border:0; box-shadow:none; background:transparent">
+        <label class="f" style="grid-column:span 2"><span>Anschrift der betroffenen Person</span>
+          <textarea class="tf" id="d_addr" rows="4" placeholder="Vorname Nachname&#10;Straße und Hausnummer&#10;Austin, TX 78701"></textarea></label>
+        <label class="f" style="grid-column:span 2"><span>Anschrift Field Office</span>
+          <textarea class="tf" id="d_office" rows="4" placeholder="Department of Homeland Security&#10;Financial Crimes Division&#10;Straße&#10;Austin, TX 78701"></textarea></label>
+        <label class="f"><span>Dienstnummer</span><input type="text" id="d_badge" placeholder="4471"></label>
+        <label class="f"><span>Telefon / Funk</span><input type="text" id="d_phone" placeholder="(512) 555-0134"></label>
+        <label class="f"><span>Datum des Schreibens</span><input type="text" id="d_date" placeholder="31.08.2026"></label>
+        <label class="f"><span>Abteilungsleitung</span><input type="text" id="d_supervisor" placeholder="SSA Nachname"></label>
+        <label class="f"><span>Anhörung – Datum</span><input type="text" id="d_hdate" placeholder="04.09.2026"></label>
+        <label class="f"><span>Anhörung – Uhrzeit</span><input type="text" id="d_htime" placeholder="14:00 Uhr"></label>
+        <label class="f"><span>Anhörung – Raum</span><input type="text" id="d_hroom" placeholder="Vernehmungsraum 2"></label>
+        <label class="f"><span>Frist zur Stellungnahme</span><input type="text" id="d_deadline" placeholder="72 Stunden ab Zustellung"></label>
+        <label class="f"><span>Gericht</span><input type="text" id="d_court" placeholder="District Court Travis County"></label>
+        <label class="f"><span>Zuständige/r Richter/in</span><input type="text" id="d_judge" placeholder="Hon. Nachname"></label>
+        <label class="f"><span>Umfang: Kontobewegungen (Tage)</span><input type="text" id="d_scope" class="num" value="30"></label>
+        <label class="f"><span>Entlastung – anerkannter Nachweis</span><input type="text" id="d_proof" placeholder="Kreditvertrag, Schenkungsanzeige"></label>
+        <label class="f"><span>Entlastung – ausgeräumter Betrag</span><input type="text" id="d_cleared" class="num" value="0"></label>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:9px">
+        <label class="chk"><input type="checkbox" id="d_hdone"><span>Anhörung nach § 5 FORA wurde bereits durchgeführt</span></label>
+        <label class="chk"><input type="checkbox" id="d_refused"><span>Betroffene Person hat die Mitwirkung verweigert oder ist nicht erschienen</span></label>
+        <label class="chk"><input type="checkbox" id="d_delay"><span>Aufschub der Benachrichtigung um 72 Stunden wird beantragt (§ 6 Abs. 6 FORA)</span></label>
+        <label class="chk"><input type="checkbox" id="d_freeze"><span>Zusätzlich Sicherungsmaßnahme nach § 7 FORA beantragt</span></label>
+      </div>
+    </div>
+  </section>
+
 </div>
 
 <div>
@@ -450,6 +627,21 @@ button.ghost:hover{color:var(--accent); border-color:var(--accent)}
         <p class="auto">Eingaben werden lokal im Browser gespeichert und bleiben beim erneuten Öffnen erhalten.</p>
       </div>
     </section>
+
+    <section class="card">
+      <header><div class="step">✎</div><h2>Dokumente</h2>
+        <div class="hint">druckfertig, A4</div>
+      </header>
+      <div class="body">
+        <div class="docbtns">
+          <button class="docbtn" data-doc="vorladung"><b>Vorladung</b><span>Ladung zur Anhörung nach § 5</span></button>
+          <button class="docbtn" data-doc="antrag"><b>Antrag Konteneinsicht</b><span>an das Gericht, § 6 Abs. 3</span></button>
+          <button class="docbtn" data-doc="summary"><b>Summary</b><span>Ermittlungsbericht zur Diskrepanz</span></button>
+          <button class="docbtn" data-doc="entlastung"><b>Entlastungspapier</b><span>Einstellung nach § 5 Abs. 4</span></button>
+        </div>
+        <p class="auto" style="margin:12px 0 0">Alle Schreiben ziehen ihre Zahlen aus dieser Akte. Änderungen im Rechner erscheinen sofort im geöffneten Dokument.</p>
+      </div>
+    </section>
   </div>
 </div>
 </div>
@@ -476,6 +668,18 @@ button.ghost:hover{color:var(--accent); border-color:var(--accent)}
   kein Bezug zu geltendem Recht.
 </p>
 
+</div>
+
+
+<div class="docview" id="docview" role="dialog" aria-modal="true" aria-label="Dokumentvorschau">
+  <div class="docbar">
+    <span class="name" id="doc_name">Dokument</span>
+    <span class="meta" id="doc_meta"></span>
+    <span class="warnchip" id="doc_hint" hidden></span>
+    <button class="act" id="doc_print">Drucken / PDF</button>
+    <button class="act ghost" id="doc_close">Schließen</button>
+  </div>
+  <div class="stage" id="doc_stage"></div>
 </div>
 
 <script>
@@ -509,6 +713,13 @@ const DEFAULTS = () => ({
   ],
   wd:[],
   tax:{rate:"2,5", free:"250.000"},
+  doc:{
+    addr:"", office:"Department of Homeland Security\nFinancial Crimes Division\n1201 Congress Avenue\nAustin, TX 78701",
+    badge:"", phone:"", date:today(), supervisor:"",
+    hdate:"", htime:"", hroom:"Vernehmungsraum 2", deadline:"72 Stunden ab Zustellung",
+    court:"District Court Travis County", judge:"", scope:"30", proof:"", cleared:"0",
+    hdone:false, refused:false, delay:false, freeze:false
+  },
   flags:{storage:false, knowledge:false, selective:false, noreason:false}
 });
 
@@ -546,16 +757,39 @@ const DEMO = () => ({
     {label:"Abhebung Bank Downtown", amount:"125.000", hours:"3",  back:false}
   ],
   tax:{rate:"2,5", free:"250.000"},
+  doc:{
+    addr:"Miguel A. Vasquez\n2114 Ridgemont Drive\nAustin, TX 78704",
+    office:"Department of Homeland Security\nFinancial Crimes Division\n1201 Congress Avenue\nAustin, TX 78701",
+    badge:"4471", phone:"(512) 555-0134", date:today(),
+    supervisor:"SSA D. Coleman", hdate:"04.09.2026", htime:"14:00 Uhr", hroom:"Vernehmungsraum 2",
+    deadline:"72 Stunden ab Zustellung", court:"District Court Travis County",
+    judge:"Hon. R. Delgado", scope:"30", proof:"", cleared:"0",
+    hdone:true, refused:false, delay:true, freeze:true
+  },
   flags:{storage:true, knowledge:true, selective:true, noreason:true}
 });
 
+function today(){
+  const d = new Date();
+  return String(d.getDate()).padStart(2,"0") + "." +
+         String(d.getMonth()+1).padStart(2,"0") + "." + d.getFullYear();
+}
+
 const KEY = "fcd-vzr-v1";
 let S = load();
+let LAST = null;
 
 function load(){
   try{
     const raw = localStorage.getItem(KEY);
-    if(raw){ const p = JSON.parse(raw); if(p && p.assets) return Object.assign(DEFAULTS(), p); }
+    if(raw){
+      const p = JSON.parse(raw);
+      if(p && p.assets){
+        const base = DEFAULTS(), out = Object.assign(base, p);
+        ["meta","tax","flags","doc"].forEach(k => out[k] = Object.assign(DEFAULTS()[k], p[k] || {}));
+        return out;
+      }
+    }
   }catch(e){}
   return DEFAULTS();
 }
@@ -617,6 +851,11 @@ function renderAll(){
   set("tx_rate",S.tax.rate); set("tx_free",S.tax.free);
   ["storage","knowledge","selective","noreason"].forEach(f=>{
     document.getElementById("fl_"+f).checked = !!S.flags[f];
+  });
+  Object.keys(S.doc).forEach(k=>{
+    const el = document.getElementById("d_"+k);
+    if(!el) return;
+    if(el.type === "checkbox") el.checked = !!S.doc[k]; else el.value = S.doc[k];
   });
 }
 function set(id,v){ document.getElementById(id).value = v==null?"":v; }
@@ -713,8 +952,10 @@ function compute(){
   txt("k_tax", money(taxGap));
   txt("k_intent", score + " / 100");
 
-  memo({start,end,regEnd,exp,infl,income,payTotal,incOther,growth,use,need,gap,cycles,
-        rate,free,taxPaid,taxDue,taxGap,score,band,key,note,near,wsum,cashEnd,cashShare});
+  LAST = {start,end,regEnd,exp,infl,income,payTotal,incOther,growth,use,need,gap,cycles,
+          rate,free,taxPaid,taxDue,taxGap,score,band,key,note,near,wsum,cashEnd,cashShare};
+  memo(LAST);
+  if(docOpen) renderDoc(docOpen);
   save();
 }
 
@@ -828,7 +1069,10 @@ document.addEventListener("input", e=>{
                m_zyklen:["meta","zyklen"], m_paycheck:["meta","paycheck"], m_agent:["meta","agent"],
                tx_rate:["tax","rate"], tx_free:["tax","free"]};
   if(map[t.id]){ S[map[t.id][0]][map[t.id][1]] = t.value; compute(); return; }
-  if(t.id && t.id.startsWith("fl_")){ S.flags[t.id.slice(3)] = t.checked; compute(); }
+  if(t.id && t.id.startsWith("fl_")){ S.flags[t.id.slice(3)] = t.checked; compute(); return; }
+  if(t.id && t.id.startsWith("d_")){
+    S.doc[t.id.slice(2)] = t.type === "checkbox" ? t.checked : t.value; compute();
+  }
 });
 
 document.addEventListener("change", e=>{
@@ -837,6 +1081,7 @@ document.addEventListener("change", e=>{
     S[t.dataset.k][+t.dataset.i][t.dataset.f] = t.checked; compute();
   }
   if(t.id && t.id.startsWith("fl_")){ S.flags[t.id.slice(3)] = t.checked; compute(); }
+  if(t.type === "checkbox" && t.id && t.id.startsWith("d_")){ S.doc[t.id.slice(2)] = t.checked; compute(); }
 });
 
 document.addEventListener("blur", e=>{
@@ -850,6 +1095,7 @@ document.addEventListener("blur", e=>{
       else if(t.id === "m_zyklen") S.meta.zyklen = t.value;
       else if(t.id === "m_paycheck") S.meta.paycheck = t.value;
       else if(t.id === "tx_free") S.tax.free = t.value;
+      else if(t.id && t.id.startsWith("d_")) S.doc[t.id.slice(2)] = t.value;
     }
     compute();
   }
@@ -890,6 +1136,459 @@ $("btn_copy").addEventListener("click", async ()=>{
   }
   setTimeout(()=> toast.className = "toast", 2600);
 });
+
+/* ================= DOKUMENTE ================= */
+const CREST = '<svg width="50" height="50" viewBox="0 0 40 40" aria-hidden="true">' +
+  '<circle cx="20" cy="20" r="18.5" fill="none" stroke="currentColor" stroke-width="1.2"/>' +
+  '<circle cx="20" cy="20" r="14.5" fill="none" stroke="currentColor" stroke-width=".6"/>' +
+  '<path d="M20 8.5 L29 12.5 V21 c0 5.6-4 9.2-9 10.9-5-1.7-9-5.3-9-10.9v-8.5z" fill="none" stroke="currentColor" stroke-width="1.4"/>' +
+  '<path d="M15 20.4 l3.6 3.6 L25.4 17" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>' +
+  '</svg>';
+
+function h(v){ return String(v==null?"":v).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+function val(v, fallback){ const t = String(v==null?"":v).trim(); return t ? h(t) : (fallback || "<i>—</i>"); }
+function nl(v, fallback){ const t = String(v==null?"":v).trim(); return t ? h(t) : (fallback || "—"); }
+
+const DOCS = {
+  vorladung:{
+    name:"Vorladung",
+    kind:"Prüfverfahren · § 5 FORA",
+    title:"Vorladung zur Anhörung",
+    sub:"Ladung mit Gelegenheit zur Stellungnahme nach dem Financial Oversight and Revenue Act",
+    to:"person"
+  },
+  antrag:{
+    name:"Antrag auf Konteneinsicht",
+    kind:"Ermittlungsverfahren · § 6 FORA",
+    title:"Antrag auf Anordnung der Konteneinsicht",
+    sub:"An das Gericht – beschränkter Zugriff auf Kontobewegungen der betroffenen Person",
+    to:"court"
+  },
+  summary:{
+    name:"Summary",
+    kind:"Ermittlungsbericht · § 4 Abs. 4 FORA",
+    title:"Feststellung einer Vermögensdiskrepanz",
+    sub:"Zusammenfassender Bericht der Financial Crimes Division",
+    to:"internal"
+  },
+  entlastung:{
+    name:"Entlastungspapier",
+    kind:"Bescheid · § 5 Abs. 4 FORA",
+    title:"Einstellung des Prüfverfahrens",
+    sub:"Unbedenklichkeitsbescheinigung für die betroffene Person",
+    to:"person"
+  }
+};
+
+function recipientBlock(kind){
+  const d = S.doc;
+  if(kind === "court"){
+    return (d.court || "District Court Travis County") + "\n" +
+           (d.judge ? d.judge + "\n" : "") + "Richterliche Bereitschaft\nAustin, Texas";
+  }
+  if(kind === "internal"){
+    return "Financial Crimes Division\nz. Hd. " + (d.supervisor || "Abteilungsleitung") +
+           "\nVerteiler: Ermittlungsakte, Leitung FCD";
+  }
+  return d.addr && d.addr.trim() ? d.addr.trim() : (S.meta.person || "Betroffene Person");
+}
+
+function sheetShell(key, body){
+  const cfg = DOCS[key], d = S.doc, m = S.meta;
+  const officeLines = (d.office || "").split("\n").filter(Boolean);
+  const senderLine = officeLines.length ? officeLines.slice(-2).join(", ") : "DHS · Financial Crimes Division · Austin";
+  const info = [
+    ["Aktenzeichen", m.az || "—"],
+    ["Sachbearbeitung", m.agent || "—"],
+    ["Dienstnummer", d.badge || "—"],
+    ["Telefon", d.phone || "—"],
+    ["Datum", d.date || "—"]
+  ].map(r => '<div><span class="dt">' + h(r[0]) + '</span><span class="dd">' + h(r[1]) + '</span></div>').join("");
+
+  return '<div class="sheet" data-doc="' + key + '">' +
+    '<i class="fold f1"></i><i class="punch"></i><i class="fold f2"></i>' +
+    '<header class="lh">' +
+      '<div class="lh-l">' + CREST +
+        '<div class="lh-t"><b>Department of Homeland Security</b>' +
+        '<span>Financial Crimes Division &middot; Austin Field Office</span></div></div>' +
+      '<div class="lh-r">' + (cfg.to === "internal" ? "VS &middot; Nur f. d. Dienstgebrauch<br>" : "") +
+        h(m.az || "ohne Az.") + "<br>Blatt 1</div>" +
+    '</header>' +
+    '<div class="lh-rule"></div><div class="lh-rule"></div>' +
+    '<div class="addr-zone">' +
+      '<div class="addr"><div class="sender">' + h(senderLine) + '</div>' +
+      '<div class="rcpt">' + h(recipientBlock(cfg.to)) + '</div></div>' +
+      '<div class="info">' + info + '</div>' +
+    '</div>' +
+    '<div class="doc-kind">' + h(cfg.kind) + '</div>' +
+    '<h1 class="doc-title">' + h(cfg.title) + '</h1>' +
+    '<p class="doc-sub">' + h(cfg.sub) + '</p>' +
+    '<div class="doc-body">' + body + '</div>' +
+    '<footer class="sheet-foot">' +
+      '<div><b>' + h(officeLines[0] || "Department of Homeland Security") + '</b>' +
+        h(officeLines.slice(1).join(", ")) + '</div>' +
+      '<div><b>Kontakt</b>' + h(m.agent || "Financial Crimes Division") +
+        (S.doc.phone ? " &middot; " + h(S.doc.phone) : "") + '</div>' +
+      '<div class="rp"><b>' + h(m.az || "ohne Az.") + '</b>Roleplay-Dokument &middot; kein amtliches Schreiben</div>' +
+    '</footer>' +
+  '</div>';
+}
+
+function figRow(label, value, cls){
+  return '<tr' + (cls ? ' class="' + cls + '"' : '') + '><td>' + label + '</td><td class="r">' + value + '</td></tr>';
+}
+function tick(on, text){
+  return '<div class="tick"><i class="' + (on ? "on" : "") + '"></i><span>' + text + '</span></div>';
+}
+function sig(name, role){
+  return '<div class="sig"><div class="sig-line"></div><div class="sig-name">' + (name || "&nbsp;") +
+    '</div><div class="sig-role">' + role + '</div></div>';
+}
+function anrede(){
+  const first = (S.doc.addr || "").split("\n")[0].trim();
+  return first || S.meta.person || "Damen und Herren";
+}
+function rechnungTabelle(d){
+  return '<table class="fig"><thead><tr><th>Rechnungsposten</th><th class="r">Betrag</th></tr></thead><tbody>' +
+    figRow("Vermögen zum Ende des Prüfzeitraums", money(d.end)) +
+    figRow("abzüglich Vermögen zu Beginn", money(d.start)) +
+    figRow("<b>Vermögenszuwachs</b>", "<b>" + money(d.growth) + "</b>", "sum") +
+    figRow("zuzüglich Ausgaben im Prüfzeitraum", money(d.exp)) +
+    figRow("<b>Mittelverwendung insgesamt</b>", "<b>" + money(d.use) + "</b>", "sum") +
+    figRow("abzüglich belegter steuerfreier Zuflüsse", money(d.infl)) +
+    figRow("<b>Erklärungsbedürftiger Mittelbedarf</b>", "<b>" + money(d.need) + "</b>", "sum") +
+    figRow("abzüglich erfasster Einkünfte", money(d.income)) +
+    figRow("Ungeklärte Differenz", money(d.gap), "hi") +
+    '</tbody></table>';
+}
+
+function buildVorladung(d){
+  const doc = S.doc;
+  return '<p class="betreff">Prüfverfahren nach § 4 FORA &ndash; ' + h(S.meta.az || "ohne Az.") +
+    (doc.hdate ? ' &ndash; Termin am ' + h(doc.hdate) : '') + '</p>' +
+    '<p>Sehr geehrte/r ' + h(anrede()) + ',</p>' +
+    '<p>im Rahmen einer Prüfung Ihrer Steuerleistung für den Zeitraum ' + val(S.meta.zeitraum, "den laufenden Prüfzeitraum") +
+    ' werden Sie hiermit zu einer Anhörung nach § 5 des Financial Oversight and Revenue Act geladen. ' +
+    'Die Anhörung gibt Ihnen Gelegenheit, zu den nachstehend genannten Feststellungen Stellung zu nehmen.</p>' +
+    '<div class="box"><h3>Termin</h3><div class="termin">' +
+      '<div><b>Datum</b>' + nl(doc.hdate, "nach Vereinbarung") + '</div>' +
+      '<div><b>Uhrzeit</b>' + nl(doc.htime, "—") + '</div>' +
+      '<div><b>Ort</b>' + nl(doc.hroom, "Field Office") + '</div>' +
+    '</div></div>' +
+    '<h2>1. Gegenstand der Prüfung</h2>' +
+    '<p>Die Prüfung nach § 4 FORA hat ein Missverhältnis zwischen Ihren erfassten Einkünften und den auf Sie ' +
+    'registrierten Vermögenswerten ergeben. Für den genannten Zeitraum stehen erfassten Einkünften in Höhe von <b>' +
+    money(d.income) + '</b> ein nachgewiesener Vermögenszuwachs von <b>' + money(d.growth) +
+    '</b> sowie Ausgaben von <b>' + money(d.exp) + '</b> gegenüber. Nach Abzug der bislang belegten steuerfreien ' +
+    'Zuflüsse verbleibt eine nicht erklärte Differenz von <b>' + money(d.gap) + '</b>.</p>' +
+    (d.cycles > 0 ? '<p>Für den letzten Abrechnungszyklus wurde bei Ihnen eine Steuer in Höhe von ' + money(d.taxPaid) +
+      ' festgesetzt. Auf Grundlage des tatsächlich festgestellten Vermögens wäre eine Steuer von ' + money(d.taxDue) +
+      ' zu erheben gewesen.</p>' : '') +
+    '<h2>2. Mitzubringende Unterlagen</h2>' +
+    '<ul>' +
+      '<li>Kauf- und Finanzierungsverträge aller auf Sie zugelassenen Fahrzeuge</li>' +
+      '<li>Kaufvertrag sowie etwaiger Kreditvertrag zu Ihrem Grundeigentum</li>' +
+      '<li>Nachweise über weitere Einkünfte: Nebentätigkeit, Unternehmensbeteiligung, Schenkung, Erbschaft</li>' +
+      '<li>Belege über Bareinzahlungen und -abhebungen des Prüfzeitraums, soweit vorhanden</li>' +
+      '<li>Amtlicher Lichtbildausweis</li>' +
+    '</ul>' +
+    '<h2>3. Rechtliche Hinweise</h2>' +
+    '<ul>' +
+      '<li>Sie sind nicht verpflichtet, sich selbst zu belasten (§ 5 Abs. 3 FORA).</li>' +
+      '<li>Sie haben das Recht, sich rechtlich vertreten zu lassen; eine Begleitung durch einen Beistand ist zulässig.</li>' +
+      '<li>Legen Sie die Herkunft Ihres Vermögens nachvollziehbar dar, ist das Verfahren nach § 5 Abs. 4 FORA einzustellen.</li>' +
+      '<li>Erscheinen Sie nicht oder verweigern Sie die Mitwirkung, behält sich diese Behörde vor, nach § 6 Abs. 3 FORA ' +
+        'die richterliche Anordnung der Einsicht in Ihre Kontobewegungen zu beantragen.</li>' +
+      '<li>Vorsätzlich unrichtige Angaben gegenüber der Behörde sind strafbar.</li>' +
+    '</ul>' +
+    '<p>Sind Sie am genannten Termin verhindert, teilen Sie dies bitte innerhalb von ' + nl(doc.deadline, "72 Stunden") +
+    ' unter Angabe des Aktenzeichens mit.</p>' +
+    '<div class="sigs">' +
+      sig(h(S.meta.agent), "Special Agent" + (doc.badge ? ", Dienstnummer " + h(doc.badge) : "") + "<br>Financial Crimes Division") +
+      '<div class="stempel">Dienst-<br>siegel</div>' +
+    '</div>' +
+    '<div class="cut"><span>Abtrennen und zurücksenden</span></div>' +
+    '<p class="small"><b>Empfangsbestätigung</b> &ndash; Aktenzeichen ' + h(S.meta.az || "ohne Az.") +
+    '<br>Die Vorladung zum vorgenannten Termin habe ich erhalten.</p>' +
+    '<div class="sigs" style="margin-top:5mm">' +
+      sig("", "Ort, Datum") + sig("", "Unterschrift der geladenen Person") +
+    '</div>';
+}
+
+function buildAntrag(d){
+  const doc = S.doc, scope = plain(num(doc.scope) || 30);
+  return '<p class="betreff">' + h(S.meta.az || "ohne Az.") + ' &ndash; ' +
+    val(S.meta.person, "betroffene Person") + ' &ndash; Antrag nach § 6 Abs. 3 FORA</p>' +
+    '<h2>I. Antrag</h2>' +
+    '<p>Es wird beantragt, gemäß § 6 Abs. 3 FORA die Einsicht in die Kontobewegungen der nachfolgend bezeichneten ' +
+    'Person anzuordnen, beschränkt auf einen Zeitraum von <b>' + scope + ' Tagen</b> vor dem Tag der Anordnung ' +
+    'sowie beschränkt auf Ein- und Auszahlungen, Überträge und Kontostände.</p>' +
+    (doc.freeze ? '<p>Ferner wird beantragt, gemäß § 7 Abs. 1 FORA die Sperrung des Kontos in Höhe der ' +
+      'voraussichtlichen Steuerforderung von ' + money(d.taxGap) + ' anzuordnen.</p>' : '') +
+    (doc.delay ? '<p>Es wird weiter beantragt, die Unterrichtung der betroffenen Person nach § 6 Abs. 6 FORA um ' +
+      '72 Stunden aufzuschieben, da andernfalls die Verschiebung von Vermögenswerten zu besorgen ist.</p>' : '') +
+    '<h2>II. Betroffene Person</h2>' +
+    '<p style="white-space:pre-line">' + h(recipientBlock("person")) + '</p>' +
+    '<h2>III. Sachverhalt</h2>' +
+    '<p>Die Financial Crimes Division führt gegen die betroffene Person ein Prüfverfahren wegen des Verdachts der ' +
+    'Umgehung des Steuerzyklus nach § 8 FORA. Anlass war eine Plausibilitätsprüfung nach § 4 Abs. 1 FORA, bei der ' +
+    'für den Prüfzeitraum ' + val(S.meta.zeitraum, "des laufenden Verfahrens") + ' eine Steuerleistung von ' +
+    money(d.taxPaid) + ' je Abrechnungszyklus festgestellt wurde, während das tatsächlich festgestellte Vermögen ' +
+    'eine Steuer von ' + money(d.taxDue) + ' je Zyklus ergeben hätte.</p>' +
+    '<p>Die daraufhin nach § 4 Abs. 4 FORA erstellte Vermögenszuwachsrechnung stützt sich ausschließlich auf ' +
+    'behördlich vorliegende und öffentlich zugängliche Daten (Steuerregister, Fahrzeugregister, Immobilienregister, ' +
+    'Gewerberegister sowie die Besoldungsdaten der öffentlichen Anstellung). Ein Zugriff auf Kontobewegungen ist ' +
+    'bislang nicht erfolgt.</p>' +
+    '<h2>IV. Vermögenszuwachsrechnung</h2>' +
+    rechnungTabelle(d) +
+    '<p>Die ungeklärte Differenz entspricht ' + (d.income > 0 ? nf1.format(d.gap / d.income * 100) + ' %' : "einem Vielfachen") +
+    ' der im selben Zeitraum erfassten Einkünfte' + (d.cycles > 0 ? ' und im Mittel ' + money(d.gap / d.cycles) +
+    ' je Abrechnungszyklus' : '') + '.</p>' +
+    (S.wd.length ? '<h2>V. Zeitliches Muster</h2><p>Aus den bereits vorliegenden Meldungen nach § 9 Abs. 6 FORA ' +
+      'ergeben sich ' + S.wd.length + ' Bargeldvorgänge, von denen ' + d.near + ' innerhalb von zwölf Stunden vor ' +
+      'einem Abrechnungsstichtag liegen; das bewegte Volumen beträgt ' + money(d.wsum) + '. Ein solches Muster ist ' +
+      'mit einem allgemeinen Sicherheitsbedürfnis nicht zu erklären, da es dem Abrechnungskalender und nicht einem ' +
+      'Dauerzustand folgt.</p>' : '') +
+    '<h2>' + (S.wd.length ? "VI." : "V.") + ' Rechtliche Würdigung</h2>' +
+    '<p>Tatsächliche Anhaltspunkte im Sinne des § 6 Abs. 1 FORA liegen vor. Die Vermögenszuwachsrechnung beziffert ' +
+    'die Lücke konkret; sie beruht nicht auf einer bloßen Vermutung und nicht auf der Zugehörigkeit zu einer ' +
+    'Personengruppe (§ 6 Abs. 2 FORA).</p>' +
+    (doc.hdone
+      ? '<p>Die betroffene Person wurde nach § 5 FORA angehört. ' + (doc.refused
+          ? 'Sie hat die Mitwirkung verweigert beziehungsweise ist zum Termin nicht erschienen.'
+          : 'Die dabei gegebenen Erklärungen haben die festgestellte Differenz nicht ausgeräumt.') + '</p>'
+      : '<p>Von einer vorherigen Anhörung wurde nach § 5 Abs. 1 FORA abgesehen, da der Ermittlungszweck ' +
+        'andernfalls gefährdet wäre.</p>') +
+    '<h2>' + (S.wd.length ? "VII." : "VI.") + ' Verhältnismäßigkeit</h2>' +
+    '<p>Der Antrag ist auf den zur Aufklärung erforderlichen Umfang beschränkt (§ 6 Abs. 4 FORA). Eine dauerhafte ' +
+    'Überwachung, eine Auswertung zurückliegender Jahre oder ein Zugriff auf Konten Dritter ist nicht beantragt. ' +
+    'Jeder Zugriff wird nach § 6 Abs. 5 FORA protokolliert und der Aufsicht auf Verlangen vorgelegt.</p>' +
+    '<h2>' + (S.wd.length ? "VIII." : "VII.") + ' Anlagen</h2>' +
+    '<ul><li>Vermögenszuwachsrechnung nach § 4 Abs. 4 FORA (Ermittlungsbericht)</li>' +
+    '<li>Auszug Fahrzeug- und Immobilienregister</li>' +
+    (doc.hdone ? '<li>Protokoll der Anhörung nach § 5 FORA</li>' : '') +
+    (S.wd.length ? '<li>Aufstellung der Bargeldvorgänge mit Zeitbezug zum Stichtag</li>' : '') +
+    '</ul>' +
+    '<div class="sigs">' +
+      sig(h(S.meta.agent), "Special Agent" + (doc.badge ? ", Dienstnummer " + h(doc.badge) : "") + "<br>Financial Crimes Division") +
+      sig(h(doc.supervisor), "Abteilungsleitung, gegengezeichnet") +
+    '</div>' +
+    '<div class="box" style="margin-top:9mm">' +
+      '<h3>Entscheidung des Gerichts</h3>' +
+      tick(false, "Dem Antrag wird stattgegeben im beantragten Umfang.") +
+      tick(false, "Dem Antrag wird stattgegeben mit folgender Beschränkung: ______________________________") +
+      tick(false, "Der Aufschub der Unterrichtung um 72 Stunden wird angeordnet.") +
+      tick(false, "Der Antrag wird abgelehnt.") +
+      '<div class="sigs" style="margin-top:6mm">' +
+        sig("", "Ort, Datum") +
+        sig(h(doc.judge), "Richter/in am " + nl(doc.court, "zuständigen Gericht")) +
+      '</div>' +
+    '</div>';
+}
+
+function buildSummary(d){
+  const doc = S.doc;
+  const assets = S.assets.map(r =>
+    '<tr><td>' + h(r.label) + '</td><td class="r">' + (r.reg ? "erfasst" : "nicht erfasst") +
+    '</td><td class="r">' + money(num(r.start)) + '</td><td class="r">' + money(num(r.end)) + '</td></tr>').join("");
+  const wd = S.wd.length
+    ? '<table class="fig"><thead><tr><th>Vorgang</th><th class="r">Betrag</th><th class="r">Std. vor Stichtag</th>' +
+      '<th class="r">danach zurückgeführt</th></tr></thead><tbody>' +
+      S.wd.map(r => '<tr><td>' + h(r.label) + '</td><td class="r">' + money(num(r.amount)) + '</td><td class="r">' +
+        plain(num(r.hours)) + '</td><td class="r">' + (r.back ? "ja" : "nein") + '</td></tr>').join("") +
+      '</tbody></table>'
+    : '<p>Bargeldvorgänge mit Zeitbezug zum Abrechnungsstichtag wurden bislang nicht erfasst.</p>';
+  const cashShare = d.cashShare >= 0.25;
+  return '<p class="betreff">Zusammenfassende Feststellung &ndash; ' + h(S.meta.az || "ohne Az.") +
+    ' &ndash; ' + val(S.meta.person, "betroffene Person") + '</p>' +
+    '<h2>1. Anlass und Rechtsgrundlage</h2>' +
+    '<p>Die Financial Crimes Division hat nach § 4 Abs. 1 FORA die Plausibilität der Steuerleistung der betroffenen ' +
+    'Person geprüft. Anlass war ein auffälliges Verhältnis zwischen der erfassten Steuerleistung und den öffentlich ' +
+    'erkennbaren Vermögenswerten. Der Prüfzeitraum umfasst ' + val(S.meta.zeitraum, "den laufenden Zeitraum") +
+    ' (' + d.cycles + ' Abrechnungszyklen).</p>' +
+    '<h2>2. Datengrundlage</h2>' +
+    '<ul><li>Erfasste Steuerleistung vergangener Abrechnungszyklen</li>' +
+    '<li>Fahrzeugregister &ndash; Halterschaft, Zulassungsdaten</li>' +
+    '<li>Immobilien- und Grundbuchregister &ndash; Eigentum, Erwerbsdatum, eingetragene Belastungen</li>' +
+    '<li>Gewerberegister &ndash; Beteiligungen und angemeldete Erträge</li>' +
+    '<li>Besoldungsdaten der öffentlichen Anstellung</li>' +
+    (S.wd.length ? '<li>Meldungen der Kreditinstitute nach § 9 Abs. 6 FORA</li>' : '') +
+    '</ul>' +
+    '<p class="small">Ein Zugriff auf Kontobewegungen nach § 6 FORA ist auf dieser Stufe nicht erfolgt.</p>' +
+    '<h2>3. Vermögensaufstellung</h2>' +
+    '<table class="fig"><thead><tr><th>Position</th><th class="r">Steuerlich</th><th class="r">Beginn</th>' +
+    '<th class="r">Ende</th></tr></thead><tbody>' + assets +
+    '<tr class="sum"><td>Summe</td><td class="r"></td><td class="r">' + money(d.start) + '</td><td class="r">' +
+    money(d.end) + '</td></tr></tbody></table>' +
+    '<p>Von dem zum Stichtag festgestellten Vermögen sind <b>' + money(d.regEnd) + '</b> steuerlich erfasst; ' +
+    '<b>' + money(d.cashEnd) + '</b> und damit ' + nf1.format(d.cashShare * 100) + ' % des Gesamtvermögens ' +
+    'werden außerhalb der Erfassung gehalten.</p>' +
+    '<h2>4. Mittelherkunft und Mittelverwendung</h2>' +
+    rechnungTabelle(d) +
+    '<p>Die ungeklärte Differenz beträgt <b>' + money(d.gap) + '</b>' +
+    (d.cycles > 0 ? ' und im Mittel ' + money(d.gap / d.cycles) + ' je Abrechnungszyklus' : '') +
+    '. Die Deckungsquote &ndash; das Verhältnis der erfassten Einkünfte zum erklärungsbedürftigen Mittelbedarf &ndash; ' +
+    'liegt bei ' + (d.need > 0 ? nf1.format(Math.min(999, d.income / d.need * 100)) : "100,0") + ' %.</p>' +
+    '<h2>5. Steuerabgleich</h2>' +
+    '<table class="fig"><tbody>' +
+    figRow("Steuersatz je Abrechnungszyklus", nf1.format(num(S.tax.rate)) + " %") +
+    figRow("Freigrenze", money(d.free)) +
+    figRow("Steuerlich erfasstes Vermögen zum Stichtag", money(d.regEnd)) +
+    figRow("Tatsächlich festgestelltes Vermögen zum Stichtag", money(d.end)) +
+    figRow("Festgesetzte Steuer je Zyklus", money(d.taxPaid)) +
+    figRow("Geschuldete Steuer je Zyklus", money(d.taxDue)) +
+    figRow("Verkürzungsbetrag, hochgerechnet auf " + d.cycles + " Zyklen", money(d.taxGap), "hi") +
+    '</tbody></table>' +
+    '<h2>6. Zeitliches Muster der Bargeldvorgänge</h2>' + wd +
+    (S.wd.length ? '<p>' + d.near + ' von ' + S.wd.length + ' Vorgängen liegen innerhalb von zwölf Stunden vor einem ' +
+      'Abrechnungsstichtag; das bewegte Volumen beträgt ' + money(d.wsum) + '. Ein Sicherheitsbedürfnis ist ein ' +
+      'Dauerzustand und erklärt eine solche Häufung unmittelbar vor dem Stichtag nicht.</p>' : '') +
+    '<h2>7. Vorsatzindikatoren</h2>' +
+    tick(S.wd.length && d.near > 0, "Zeitliche Kopplung der Abhebungen an den Abrechnungsstichtag") +
+    tick(S.wd.some(r => r.back), "Rückführung der Mittel auf das Konto nach dem Stichtag") +
+    tick(cashShare, "Wesentlicher Teil des Vermögens wird außerhalb der Erfassung gehalten") +
+    tick(S.flags.storage, "Aufbewahrung von Bargeld in Fahrzeug oder Behältnis statt in Safe oder Schließfach") +
+    tick(S.flags.knowledge, "Kenntnis des Berechnungsmechanismus in der Anhörung eingeräumt") +
+    tick(S.flags.selective, "Konto wird für laufende Zahlungen weiter genutzt; kein generelles Misstrauen erkennbar") +
+    tick(S.flags.noreason, "Kein angezeigter Diebstahl oder Bankvorfall, der die Bargeldhaltung erklären würde") +
+    '<p>Bewertung der Indikatoren: <b>' + d.score + ' von 100 Punkten</b> &ndash; ' + h(d.band) + '.</p>' +
+    (doc.hdone ? '<h2>8. Einlassung der betroffenen Person</h2><p>' + (doc.refused
+      ? 'Die betroffene Person hat die Mitwirkung verweigert oder ist zum Anhörungstermin nicht erschienen. ' +
+        'Eine Erklärung der festgestellten Differenz liegt nicht vor.'
+      : 'Die betroffene Person wurde nach § 5 FORA angehört. Die vorgetragenen Erklärungen und vorgelegten Belege ' +
+        'sind in die vorstehende Rechnung eingeflossen, soweit sie nachprüfbar waren.') + '</p>' : '') +
+    '<h2>' + (doc.hdone ? "9." : "8.") + ' Bewertung</h2>' +
+    '<p><b>' + h(d.key) + '.</b> ' + h(d.note) + '</p>' +
+    '<h2>' + (doc.hdone ? "10." : "9.") + ' Vorschlag für das weitere Vorgehen</h2>' +
+    '<ul>' +
+    (d.gap <= 0
+      ? '<li>Einstellung des Verfahrens nach § 5 Abs. 4 FORA und Erteilung eines Entlastungsbescheids.</li>'
+      : (doc.hdone
+          ? '<li>Antrag auf richterliche Anordnung der Einsicht in die Kontobewegungen nach § 6 Abs. 3 FORA, ' +
+            'beschränkt auf ' + plain(num(doc.scope) || 30) + ' Tage.</li>'
+          : '<li>Ladung der betroffenen Person zur Anhörung nach § 5 FORA mit Gelegenheit zur Erklärung der Differenz.</li>')) +
+    (doc.freeze ? '<li>Sicherung der voraussichtlichen Steuerforderung nach § 7 FORA.</li>' : '') +
+    '<li>Trennung von Straf- und Disziplinarverfahren sowie Ermittlungsführung durch eine nicht betroffene ' +
+      'Dienststelle, soweit § 10 FORA einschlägig ist.</li>' +
+    '</ul>' +
+    '<p class="small">Diese Aufstellung beziffert eine Lücke; sie ersetzt keinen Beweis. Die betroffene Person ' +
+    'erhält Gelegenheit, die Herkunft ihres Vermögens darzulegen. Legales Halten von Vermögenswerten &ndash; Leasing, ' +
+    'Finanzierung, betriebliche Nutzung, dokumentierte Schenkung &ndash; stellt nach § 8 Abs. 5 FORA keine Umgehung dar.</p>' +
+    '<div class="sigs">' +
+      sig(h(S.meta.agent), "Special Agent" + (doc.badge ? ", Dienstnummer " + h(doc.badge) : "") + "<br>Berichterstattung") +
+      sig(h(doc.supervisor), "Abteilungsleitung, zur Kenntnis genommen") +
+    '</div>';
+}
+
+function buildEntlastung(d){
+  const doc = S.doc;
+  const cleared = num(doc.cleared);
+  const rest = d.gap - cleared;
+  const tol = Math.max(d.income * 0.05, 0);
+  let feststellung;
+  if(rest <= 0){
+    feststellung = "Der festgestellte Vermögenszuwachs ist durch Ihre erfassten Einkünfte, die belegten " +
+      "steuerfreien Zuflüsse und die im Verfahren vorgelegten Nachweise vollständig gedeckt.";
+  } else if(rest <= tol){
+    feststellung = "Die verbliebene Differenz von " + money(rest) + " liegt im Rahmen der Erfassungsgenauigkeit " +
+      "und rechtfertigt keine weiteren Maßnahmen.";
+  } else {
+    feststellung = "Es verbleibt eine rechnerische Differenz von " + money(rest) + ". Diese ist nach Abwägung " +
+      "der vorgelegten Nachweise nicht geeignet, den für weitere Maßnahmen erforderlichen konkreten Verdacht " +
+      "im Sinne des § 6 Abs. 1 FORA zu tragen; das Verfahren wird daher eingestellt.";
+  }
+  return '<p class="betreff">Einstellung des Prüfverfahrens &ndash; ' + h(S.meta.az || "ohne Az.") + '</p>' +
+    '<p>Sehr geehrte/r ' + h(anrede()) + ',</p>' +
+    '<p>das gegen Sie unter dem oben genannten Aktenzeichen geführte Prüfverfahren wegen des Verdachts der ' +
+    'Umgehung des Steuerzyklus nach § 8 FORA wird hiermit <b>eingestellt</b>.</p>' +
+    '<h2>1. Gegenstand der Prüfung</h2>' +
+    '<p>Geprüft wurde das Verhältnis Ihrer im Zeitraum ' + val(S.meta.zeitraum, "des Verfahrens") + ' erfassten ' +
+    'Einkünfte zu den auf Sie registrierten Vermögenswerten. Die Prüfung stützte sich auf die in § 4 Abs. 2 FORA ' +
+    'genannten Datenquellen.</p>' +
+    '<h2>2. Feststellungen</h2>' +
+    rechnungTabelle(d) +
+    (cleared > 0
+      ? '<table class="fig"><tbody>' +
+        figRow("Ungeklärte Differenz laut Prüfung", money(d.gap)) +
+        figRow("abzüglich im Verfahren belegter Beträge", money(cleared)) +
+        figRow("Verbleibende Differenz", money(Math.max(0, rest)), "hi") +
+        '</tbody></table>'
+      : '') +
+    '<p>' + feststellung + (doc.proof ? ' Als Nachweis anerkannt wurde insbesondere: ' + h(doc.proof) + '.' : '') + '</p>' +
+    '<h2>3. Rechtsfolgen</h2>' +
+    '<ul>' +
+      '<li>Eine Einsicht in Ihre Kontobewegungen nach § 6 FORA findet nicht statt.</li>' +
+      '<li>Etwaige Sicherungsmaßnahmen nach § 7 FORA werden mit Zugang dieses Bescheids aufgehoben.</li>' +
+      '<li>Die im Verfahren erhobenen Daten unterliegen Ihrem Auskunftsrecht nach § 11 Abs. 1 FORA.</li>' +
+      '<li>Ein Eintrag über eine Finanzstraftat erfolgt nicht.</li>' +
+    '</ul>' +
+    '<h2>4. Hinweise</h2>' +
+    '<p>Dieser Bescheid bezieht sich ausschließlich auf den genannten Prüfzeitraum. Ergeben sich neue Tatsachen, ' +
+    'bleibt eine erneute Prüfung nach § 4 FORA vorbehalten. Sie können dieses Schreiben gegenüber anderen Behörden ' +
+    'und gegenüber Kreditinstituten als Nachweis der abgeschlossenen und beanstandungsfreien Prüfung vorlegen.</p>' +
+    '<p>Wir bedanken uns für Ihre Mitwirkung.</p>' +
+    '<div class="sigs">' +
+      sig(h(S.meta.agent), "Special Agent" + (doc.badge ? ", Dienstnummer " + h(doc.badge) : "") + "<br>Financial Crimes Division") +
+      sig(h(doc.supervisor), "Abteilungsleitung") +
+    '</div>' +
+    '<div class="sigs" style="margin-top:4mm; justify-content:flex-end">' +
+      '<div class="stempel">Dienst-<br>siegel</div>' +
+    '</div>';
+}
+
+const BUILDERS = {vorladung:buildVorladung, antrag:buildAntrag, summary:buildSummary, entlastung:buildEntlastung};
+let docOpen = null;
+
+function renderDoc(key){
+  if(!LAST) return;
+  const stage = $("doc_stage");
+  stage.innerHTML = sheetShell(key, BUILDERS[key](LAST));
+  txt("doc_name", DOCS[key].name);
+  txt("doc_meta", (S.meta.az || "ohne Az.") + " · " + (S.meta.person || "ohne Namen"));
+  const hint = $("doc_hint");
+  const rest = LAST.gap - num(S.doc.cleared);
+  if(key === "entlastung" && rest > Math.max(LAST.income * 0.05, 0)){
+    hint.textContent = "Offen: " + money(rest) + " – Entlastung erst nach Ausräumung tragfähig";
+    hint.hidden = false;
+  } else {
+    hint.hidden = true;
+  }
+  fitSheet();
+}
+function fitSheet(){
+  const sheet = document.querySelector("#doc_stage .sheet");
+  if(!sheet) return;
+  const avail = $("doc_stage").clientWidth - 24;
+  sheet.style.zoom = Math.min(1, Math.max(0.35, avail / 794));
+}
+function openDoc(key){
+  docOpen = key;
+  document.body.classList.add("doc-open");
+  pageRule("@page{size:A4; margin:0}");
+  renderDoc(key);
+  $("doc_close").focus();
+}
+function closeDoc(){
+  docOpen = null;
+  document.body.classList.remove("doc-open");
+  pageRule("@page{size:A4; margin:14mm}");
+  $("doc_stage").innerHTML = "";
+}
+function pageRule(rule){
+  let el = document.getElementById("pagerule");
+  if(!el){ el = document.createElement("style"); el.id = "pagerule"; document.head.appendChild(el); }
+  el.textContent = rule;
+}
+
+document.addEventListener("click", e=>{
+  const b = e.target.closest("[data-doc]");
+  if(b && b.classList.contains("docbtn")){ openDoc(b.dataset.doc); return; }
+  if(e.target.id === "doc_close" || e.target.id === "docview"){ closeDoc(); return; }
+  if(e.target.id === "doc_print"){ window.print(); }
+});
+document.addEventListener("keydown", e=>{ if(e.key === "Escape" && docOpen) closeDoc(); });
+window.addEventListener("resize", fitSheet);
+pageRule("@page{size:A4; margin:14mm}");
 
 renderAll();
 compute();

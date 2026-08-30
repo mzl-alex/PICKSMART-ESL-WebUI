@@ -249,8 +249,9 @@ body.doc-open .docview{display:block}
 /* Das Schreiben selbst: bewusst einfarbig, unabhängig vom Theme */
 .sheet{
   position:relative; width:210mm; min-height:297mm; background:#fff; color:#15181c;
-  padding:15mm 18mm 24mm 24mm; box-shadow:0 20px 60px -22px rgba(0,0,0,.75);
-  font-family:var(--body); font-size:10.2pt; line-height:1.5; text-align:left;
+  padding:15mm 18mm 12mm 24mm; box-shadow:0 20px 60px -22px rgba(0,0,0,.75);
+  font-family:var(--body); font-size:10pt; line-height:1.45; text-align:left;
+  display:flex; flex-direction:column;
 }
 .sheet .fold, .sheet .punch{
   position:absolute; left:7mm; width:6mm; height:0; border-top:.3mm solid #a8b0b9;
@@ -258,9 +259,9 @@ body.doc-open .docview{display:block}
 .sheet .f1{top:87mm}
 .sheet .f2{top:192mm}
 .sheet .punch{top:148.5mm; width:9mm; border-top-color:#828b95}
-.sheet h2{font-family:var(--disp); font-size:10.4pt; font-weight:700; letter-spacing:.01em;
-  margin:5mm 0 1.5mm; color:#15181c}
-.sheet p{margin:0 0 2.6mm}
+.sheet h2{font-family:var(--disp); font-size:10.2pt; font-weight:700; letter-spacing:.01em;
+  margin:4.4mm 0 1.4mm; color:#15181c}
+.sheet p{margin:0 0 2.3mm}
 .sheet ul, .sheet ol{margin:0 0 3mm; padding-left:5mm}
 .sheet li{margin-bottom:1.2mm}
 .sheet b{font-weight:600}
@@ -278,7 +279,7 @@ body.doc-open .docview{display:block}
 .lh-rule{height:0; border-top:.7mm solid #15181c; margin:2.5mm 0 0}
 .lh-rule + .lh-rule{border-top:.2mm solid #15181c; margin-top:.9mm}
 
-.addr-zone{display:flex; gap:8mm; margin-top:9mm; align-items:flex-start}
+.addr-zone{display:flex; gap:8mm; margin-top:8mm; align-items:flex-start}
 .addr{width:85mm; flex:none; min-height:27mm}
 .addr .sender{font-size:7pt; color:#4a545f; border-bottom:.2mm solid #b9c0c8;
   padding-bottom:1mm; margin-bottom:3mm}
@@ -289,14 +290,14 @@ body.doc-open .docview{display:block}
 .info .dd{font-family:var(--mono); font-size:8.4pt; font-variant-numeric:tabular-nums}
 
 .doc-kind{font-family:var(--disp); font-size:8pt; font-weight:700; letter-spacing:.2em;
-  text-transform:uppercase; color:#8a3227; margin:11mm 0 1.5mm}
+  text-transform:uppercase; color:#8a3227; margin:8mm 0 1.4mm}
 .doc-title{font-family:var(--disp); font-size:15pt; font-weight:800; letter-spacing:-.01em;
   line-height:1.2; margin:0 0 1.5mm}
-.doc-sub{font-size:9.4pt; color:#4a545f; margin:0 0 6mm}
-.betreff{font-weight:600; margin:0 0 4mm}
-.doc-body{margin-top:2mm}
+.doc-sub{font-size:9.2pt; color:#4a545f; margin:0 0 5mm}
+.betreff{font-weight:600; margin:0 0 3.4mm}
+.doc-body{margin-top:2mm; flex:1 0 auto}
 
-table.fig{width:100%; border-collapse:collapse; margin:2mm 0 4mm; font-size:9.4pt;
+table.fig{width:100%; border-collapse:collapse; margin:1.8mm 0 3.4mm; font-size:9.2pt;
   font-variant-numeric:tabular-nums}
 table.fig th{font-family:var(--disp); font-size:7.8pt; font-weight:700; letter-spacing:.09em;
   text-transform:uppercase; color:#4a545f; text-align:left; border-bottom:.35mm solid #15181c;
@@ -337,7 +338,7 @@ table.fig tr.hi td.r{font-weight:700}
   font-size:7.2pt; color:#8a929b; letter-spacing:.1em; text-transform:uppercase}
 
 .sheet-foot{
-  position:absolute; left:24mm; right:18mm; bottom:9mm; border-top:.35mm solid #c3c9d0;
+  margin-top:6mm; border-top:.35mm solid #c3c9d0;
   padding-top:2.2mm; display:flex; gap:7mm; font-size:7.2pt; color:#5a6470; line-height:1.45;
 }
 .sheet-foot div{flex:1}
@@ -409,7 +410,7 @@ table.fig tr.hi td.r{font-weight:700}
   <label class="f"><span>Prüfzeitraum</span><input type="text" id="m_zeitraum" placeholder="Zyklus 112 – 123"></label>
   <label class="f"><span>Abrechnungszyklen</span><input type="text" id="m_zyklen" class="num" value="12"></label>
   <label class="f"><span>Nettogehalt je Zyklus</span><input type="text" id="m_paycheck" class="num" value="0"></label>
-  <label class="f"><span>Ermittlungsführung</span><input type="text" id="m_agent" placeholder="SA Nachname, Dienstnr."></label>
+  <label class="f"><span>Ermittlungsführung</span><input type="text" id="m_agent" placeholder="SA Nachname"></label>
 </div>
 
 <div class="grid">
@@ -725,7 +726,7 @@ const DEFAULTS = () => ({
 
 const DEMO = () => ({
   meta:{az:"DHS-FCD-2026-0147", person:"Vasquez, M. – Leiter Rettungsdienst",
-        zeitraum:"Zyklus 112 – 123", zyklen:"12", paycheck:"18.500", agent:"SA Brennan, 4471"},
+        zeitraum:"Zyklus 112 – 123", zyklen:"12", paycheck:"18.500", agent:"SA J. Brennan"},
   assets:[
     {label:"Bankguthaben",           reg:true,  start:"42.000",  end:"61.000"},
     {label:"Bargeld (festgestellt)", reg:false, start:"0",       end:"480.000"},
@@ -1262,54 +1263,201 @@ function rechnungTabelle(d){
     '</tbody></table>';
 }
 
+function nachweisFuer(label){
+  const l = String(label).toLowerCase();
+  if(/fahrzeug|auto|kfz|wagen/.test(l))
+    return "Kaufvertrag oder Leasingvertrag, Zulassungsbescheinigung, Zahlungsnachweis";
+  if(/immobil|haus|wohnung|grundst/.test(l))
+    return "Kaufvertrag, Kreditvertrag nebst Tilgungsplan, Grundbuchauszug";
+  if(/bank|konto|guthaben/.test(l))
+    return "Kontoauszüge des Prüfzeitraums (freiwillige Vorlage)";
+  if(/bargeld|cash/.test(l))
+    return "Herkunftsnachweis, Abhebungsbelege, Angabe des Aufbewahrungsorts";
+  if(/unternehm|firma|gewerbe|beteilig/.test(l))
+    return "Gewerbeanmeldung, Gesellschaftsvertrag, Gewinnermittlung des Zeitraums";
+  return "Erwerbsnachweis und Beleg über die Mittelherkunft";
+}
+
 function buildVorladung(d){
   const doc = S.doc;
+  const posten = S.assets.filter(r => num(r.end) > 0);
+  const quote = d.income > 0 ? nf1.format(d.gap / d.income * 100) + " %" : "ein Vielfaches";
+  const proben = posten.map(r =>
+    '<tr><td>' + h(r.label) + '</td><td class="r">' + money(num(r.end)) + '</td><td>' +
+    nachweisFuer(r.label) + '</td></tr>').join("");
+
   return '<p class="betreff">Prüfverfahren nach § 4 FORA &ndash; ' + h(S.meta.az || "ohne Az.") +
     (doc.hdate ? ' &ndash; Termin am ' + h(doc.hdate) : '') + '</p>' +
+
     '<p>Sehr geehrte/r ' + h(anrede()) + ',</p>' +
-    '<p>im Rahmen einer Prüfung Ihrer Steuerleistung für den Zeitraum ' + val(S.meta.zeitraum, "den laufenden Prüfzeitraum") +
-    ' werden Sie hiermit zu einer Anhörung nach § 5 des Financial Oversight and Revenue Act geladen. ' +
-    'Die Anhörung gibt Ihnen Gelegenheit, zu den nachstehend genannten Feststellungen Stellung zu nehmen.</p>' +
+    '<p>die Financial Crimes Division führt gegen Sie ein Prüfverfahren nach dem Financial Oversight and ' +
+    'Revenue Act. Sie werden hiermit zu einer Anhörung nach § 5 FORA geladen. Dieses Schreiben teilt Ihnen ' +
+    'vollständig mit, <b>was festgestellt wurde</b>, <b>woraus sich die Feststellungen ergeben</b> und ' +
+    '<b>was von Ihnen erwartet wird</b>. Ziel der Anhörung ist Ihre Stellungnahme, nicht Ihre Belastung.</p>' +
+
     '<div class="box"><h3>Termin</h3><div class="termin">' +
       '<div><b>Datum</b>' + nl(doc.hdate, "nach Vereinbarung") + '</div>' +
       '<div><b>Uhrzeit</b>' + nl(doc.htime, "—") + '</div>' +
       '<div><b>Ort</b>' + nl(doc.hroom, "Field Office") + '</div>' +
     '</div></div>' +
-    '<h2>1. Gegenstand der Prüfung</h2>' +
-    '<p>Die Prüfung nach § 4 FORA hat ein Missverhältnis zwischen Ihren erfassten Einkünften und den auf Sie ' +
-    'registrierten Vermögenswerten ergeben. Für den genannten Zeitraum stehen erfassten Einkünften in Höhe von <b>' +
-    money(d.income) + '</b> ein nachgewiesener Vermögenszuwachs von <b>' + money(d.growth) +
-    '</b> sowie Ausgaben von <b>' + money(d.exp) + '</b> gegenüber. Nach Abzug der bislang belegten steuerfreien ' +
-    'Zuflüsse verbleibt eine nicht erklärte Differenz von <b>' + money(d.gap) + '</b>.</p>' +
-    (d.cycles > 0 ? '<p>Für den letzten Abrechnungszyklus wurde bei Ihnen eine Steuer in Höhe von ' + money(d.taxPaid) +
-      ' festgesetzt. Auf Grundlage des tatsächlich festgestellten Vermögens wäre eine Steuer von ' + money(d.taxDue) +
-      ' zu erheben gewesen.</p>' : '') +
-    '<h2>2. Mitzubringende Unterlagen</h2>' +
+
+    '<h2>1. Anlass und Rechtsgrundlage</h2>' +
+    '<p>Nach § 4 Abs. 1 FORA prüft diese Behörde stichprobenartig und anlassunabhängig die Plausibilität der ' +
+    'geleisteten Steuerzahlungen. Bei einer solchen Prüfung ergab sich für Sie ein auffälliges Missverhältnis ' +
+    'zwischen der erfassten Steuerleistung und den auf Sie registrierten Vermögenswerten. Die Behörde hat ' +
+    'daraufhin nach § 4 Abs. 4 FORA eine Vermögenszuwachsrechnung erstellt.</p>' +
+    '<p><b>Ein Zugriff auf Ihre Kontobewegungen hat bis heute nicht stattgefunden.</b> Ein solcher Zugriff ' +
+    'setzt nach § 6 FORA einen konkreten Verdacht und eine richterliche Anordnung voraus. Der Zweck dieser ' +
+    'Anhörung besteht gerade darin, Ihnen vor einem solchen Schritt Gelegenheit zur Erklärung zu geben.</p>' +
+
+    '<h2>2. Ausgewertete Datenquellen</h2>' +
+    '<p>Der Prüfung liegen ausschließlich Daten zugrunde, die dieser Behörde bereits vorliegen oder öffentlich ' +
+    'zugänglich sind (§ 4 Abs. 2 FORA):</p>' +
     '<ul>' +
-      '<li>Kauf- und Finanzierungsverträge aller auf Sie zugelassenen Fahrzeuge</li>' +
-      '<li>Kaufvertrag sowie etwaiger Kreditvertrag zu Ihrem Grundeigentum</li>' +
-      '<li>Nachweise über weitere Einkünfte: Nebentätigkeit, Unternehmensbeteiligung, Schenkung, Erbschaft</li>' +
-      '<li>Belege über Bareinzahlungen und -abhebungen des Prüfzeitraums, soweit vorhanden</li>' +
-      '<li>Amtlicher Lichtbildausweis</li>' +
+      '<li><b>Steuerregister</b> &ndash; erfasste Steuerleistung der zurückliegenden Abrechnungszyklen</li>' +
+      '<li><b>Fahrzeugregister</b> &ndash; Halterschaft, Zulassungsdatum, Zulassung auf Person oder Unternehmen</li>' +
+      '<li><b>Immobilien- und Grundbuchregister</b> &ndash; Eigentum, Erwerbsdatum, eingetragene Belastungen</li>' +
+      '<li><b>Gewerberegister</b> &ndash; Beteiligungen und angemeldete Erträge</li>' +
+      '<li><b>Besoldungsdaten</b> &ndash; Bezüge aus öffentlicher Anstellung, soweit einschlägig</li>' +
+      (S.wd.length ? '<li><b>Meldungen der Kreditinstitute</b> nach § 9 Abs. 6 FORA &ndash; Bareinzahlungen ' +
+        'und -abhebungen oberhalb der Meldegrenze, ohne Einsicht in weitere Kontobewegungen</li>' : '') +
     '</ul>' +
-    '<h2>3. Rechtliche Hinweise</h2>' +
+
+    '<h2>3. Festgestellter Sachverhalt</h2>' +
+    '<p>Für den Prüfzeitraum ' + val(S.meta.zeitraum, "des laufenden Verfahrens") + ' (' + d.cycles +
+    ' Abrechnungszyklen) wurden folgende Vermögenswerte festgestellt. Die Spalte „steuerlich" gibt an, ob der ' +
+    'Wert zum Stichtag in der Steuererfassung geführt wurde:</p>' +
+    '<table class="fig"><thead><tr><th>Position</th><th class="r">Steuerlich</th><th class="r">Beginn</th>' +
+    '<th class="r">Ende</th></tr></thead><tbody>' +
+    S.assets.map(r => '<tr><td>' + h(r.label) + '</td><td class="r">' + (r.reg ? "erfasst" : "nicht erfasst") +
+      '</td><td class="r">' + money(num(r.start)) + '</td><td class="r">' + money(num(r.end)) + '</td></tr>').join("") +
+    '<tr class="sum"><td>Summe</td><td class="r"></td><td class="r">' + money(d.start) + '</td><td class="r">' +
+    money(d.end) + '</td></tr></tbody></table>' +
+
+    '<p>Aus diesen Werten ergibt sich folgende Rechnung. Sie stellt dem, was Sie im Prüfzeitraum an Mitteln ' +
+    'verwendet haben, das gegenüber, was Sie nachweislich eingenommen haben:</p>' +
+    rechnungTabelle(d) +
+    '<p>Es verbleibt eine <b>ungeklärte Differenz von ' + money(d.gap) + '</b>. Das entspricht ' + quote +
+    ' Ihrer im selben Zeitraum erfassten Einkünfte' +
+    (d.cycles > 0 ? ' und durchschnittlich ' + money(d.gap / d.cycles) + ' je Abrechnungszyklus' : '') +
+    '. Diese Differenz ist der Gegenstand der Anhörung.</p>' +
+
+    '<h2>4. Steuerliche Auswirkung</h2>' +
+    '<table class="fig"><tbody>' +
+    figRow("Steuersatz je Abrechnungszyklus", nf1.format(num(S.tax.rate)) + " %") +
+    figRow("Freigrenze", money(d.free)) +
+    figRow("Steuerlich erfasstes Vermögen zum Stichtag", money(d.regEnd)) +
+    figRow("Tatsächlich festgestelltes Vermögen zum Stichtag", money(d.end)) +
+    figRow("Bei Ihnen festgesetzte Steuer je Zyklus", money(d.taxPaid)) +
+    figRow("Auf das festgestellte Vermögen geschuldete Steuer je Zyklus", money(d.taxDue)) +
+    figRow("Differenz, hochgerechnet auf " + d.cycles + " Zyklen", money(d.taxGap), "hi") +
+    '</tbody></table>' +
+    (d.cashEnd > 0 ? '<p>Von dem festgestellten Vermögen werden <b>' + money(d.cashEnd) + '</b> und damit ' +
+      nf1.format(d.cashShare * 100) + ' % außerhalb der Steuererfassung gehalten. Nach § 3 Abs. 2 FORA wird ' +
+      'die Steuer auf das zum Stichtag erfasste Vermögen berechnet; die Inanspruchnahme der Freigrenze durch ' +
+      'künstliche Verringerung des erfassten Vermögens ist nach § 3 Abs. 4 FORA nicht zulässig.</p>' : '') +
+
+    (S.wd.length
+      ? '<h2>5. Zeitliches Muster der Bargeldvorgänge</h2>' +
+        '<p>Aus den Meldungen nach § 9 Abs. 6 FORA liegen folgende Vorgänge vor. Angegeben ist der zeitliche ' +
+        'Abstand zum jeweiligen Abrechnungsstichtag:</p>' +
+        '<table class="fig"><thead><tr><th>Vorgang</th><th class="r">Betrag</th>' +
+        '<th class="r">Std. vor Stichtag</th><th class="r">danach zurückgeführt</th></tr></thead><tbody>' +
+        S.wd.map(r => '<tr><td>' + h(r.label) + '</td><td class="r">' + money(num(r.amount)) +
+          '</td><td class="r">' + plain(num(r.hours)) + '</td><td class="r">' + (r.back ? "ja" : "nein") +
+          '</td></tr>').join("") +
+        '</tbody></table>' +
+        '<p>' + d.near + ' von ' + S.wd.length + ' Vorgängen liegen innerhalb von zwölf Stunden vor einem ' +
+        'Stichtag; das bewegte Volumen beträgt ' + money(d.wsum) + '. Auf dieses Muster werden Sie in der ' +
+        'Anhörung angesprochen, weil § 8 Abs. 2 lit. a FORA die Abhebung von Bargeld in zeitlicher Nähe zum ' +
+        'Stichtag ohne wirtschaftlich nachvollziehbaren Grund als Umgehungshandlung einstuft.</p>'
+      : '') +
+
+    '<h2>' + (S.wd.length ? "6." : "5.") + ' Was diese Feststellung bedeutet &ndash; und was nicht</h2>' +
+    '<p>Die Rechnung beziffert eine Lücke. Sie ist <b>kein Beweis</b> für eine Straftat und begründet für sich ' +
+    'genommen keinen Vorwurf. Ein Missverhältnis zwischen Einkünften und Vermögen hat regelmäßig legale ' +
+    'Ursachen. Nach § 8 Abs. 5 FORA stellt insbesondere das Folgende <b>keine</b> Umgehung dar:</p>' +
     '<ul>' +
-      '<li>Sie sind nicht verpflichtet, sich selbst zu belasten (§ 5 Abs. 3 FORA).</li>' +
-      '<li>Sie haben das Recht, sich rechtlich vertreten zu lassen; eine Begleitung durch einen Beistand ist zulässig.</li>' +
-      '<li>Legen Sie die Herkunft Ihres Vermögens nachvollziehbar dar, ist das Verfahren nach § 5 Abs. 4 FORA einzustellen.</li>' +
-      '<li>Erscheinen Sie nicht oder verweigern Sie die Mitwirkung, behält sich diese Behörde vor, nach § 6 Abs. 3 FORA ' +
-        'die richterliche Anordnung der Einsicht in Ihre Kontobewegungen zu beantragen.</li>' +
-      '<li>Vorsätzlich unrichtige Angaben gegenüber der Behörde sind strafbar.</li>' +
+      '<li>Leasing oder Finanzierung eines Fahrzeugs, auch bei hohem Fahrzeugwert</li>' +
+      '<li>Nutzung eines auf ein Unternehmen oder eine Behörde zugelassenen Fahrzeugs</li>' +
+      '<li>Erwerb einer Immobilie über einen Kredit</li>' +
+      '<li>Dokumentierte Schenkungen und Erbschaften</li>' +
+      '<li>Erlöse aus dem Verkauf von Vermögenswerten, die Sie zuvor bereits besaßen</li>' +
+      '<li>Einkünfte aus angemeldeter Nebentätigkeit oder Unternehmensbeteiligung</li>' +
     '</ul>' +
-    '<p>Sind Sie am genannten Termin verhindert, teilen Sie dies bitte innerhalb von ' + nl(doc.deadline, "72 Stunden") +
-    ' unter Angabe des Aktenzeichens mit.</p>' +
+    '<p>Legen Sie eine dieser Ursachen nachvollziehbar dar, ist das Verfahren nach § 5 Abs. 4 FORA ' +
+    '<b>einzustellen</b>. Sie erhalten in diesem Fall einen Einstellungsbescheid, den Sie gegenüber anderen ' +
+    'Behörden und Kreditinstituten vorlegen können.</p>' +
+
+    '<h2>' + (S.wd.length ? "7." : "6.") + ' Was Sie jetzt zu tun haben</h2>' +
+    '<ol>' +
+      '<li><b>Termin bestätigen oder verlegen.</b> Sind Sie verhindert, teilen Sie dies innerhalb von ' +
+        nl(doc.deadline, "72 Stunden") + ' unter Angabe des Aktenzeichens mit. Ein Ersatztermin wird Ihnen ' +
+        'angeboten.</li>' +
+      '<li><b>Unterlagen zusammenstellen.</b> Bringen Sie zu jeder nachstehend genannten Position die dort ' +
+        'aufgeführten Nachweise mit. Kopien genügen; Originale können vorgelegt und wieder mitgenommen werden.</li>' +
+      '<li><b>Lücken benennen.</b> Können Sie einen Nachweis nicht beibringen, notieren Sie, woher der Wert ' +
+        'stammt und wer die Angabe bestätigen kann. Auch eine unvollständige, aber überprüfbare Angabe hilft.</li>' +
+      '<li><b>Vertretung anzeigen.</b> Lassen Sie sich anwaltlich vertreten, teilen Sie Name und Kontakt vorab ' +
+        'mit, damit die Vollmacht zum Termin vorliegt.</li>' +
+      '<li><b>Lichtbildausweis mitführen.</b> Die Identität wird zu Beginn der Anhörung festgestellt.</li>' +
+    '</ol>' +
+    (proben
+      ? '<table class="fig"><thead><tr><th>Festgestellte Position</th><th class="r">Wert</th>' +
+        '<th>Erwarteter Nachweis</th></tr></thead><tbody>' + proben + '</tbody></table>'
+      : '') +
+    '<p class="small">Weitere Unterlagen, die Ihre Mittelherkunft belegen &ndash; Verträge, Quittungen, ' +
+    'Zahlungsbestätigungen, Bestätigungen Dritter &ndash; können Sie jederzeit zusätzlich vorlegen.</p>' +
+
+    '<h2>' + (S.wd.length ? "8." : "7.") + ' Ablauf und Gegenstand der Anhörung</h2>' +
+    '<p>Die Anhörung dauert erfahrungsgemäß 30 bis 60 Minuten und wird protokolliert. Zu Beginn werden Ihnen ' +
+    'Ihre Rechte eröffnet, anschließend erhalten Sie Gelegenheit, den Sachverhalt aus Ihrer Sicht ' +
+    'zusammenhängend darzustellen. Erst danach werden Einzelfragen gestellt. Sie können jederzeit eine ' +
+    'Unterbrechung verlangen. Eine Durchsuchung, eine Beschlagnahme oder eine Festnahme ist mit dieser Ladung ' +
+    'nicht verbunden.</p>' +
+    '<p>Gegenstand der Befragung sind folgende Themen:</p>' +
+    '<ul>' +
+      '<li>Ihre sämtlichen Einkommensquellen im Prüfzeitraum</li>' +
+      '<li>Erwerb, Bezahlung und Halterschaft der auf Sie zugelassenen Fahrzeuge</li>' +
+      '<li>Finanzierung Ihres Grundeigentums</li>' +
+      '<li>Zuwendungen Dritter, Schenkungen, Darlehen und Erbschaften</li>' +
+      '<li>Umfang und Aufbewahrung von Bargeld außerhalb des Kontos</li>' +
+      '<li>Ihre Kenntnis vom Berechnungsmechanismus der zyklischen Steuer</li>' +
+    '</ul>' +
+
+    '<h2>' + (S.wd.length ? "9." : "8.") + ' Ihre Rechte</h2>' +
+    '<ul>' +
+      '<li>Sie sind <b>nicht verpflichtet, sich selbst zu belasten</b> (§ 5 Abs. 3 FORA). Aus der Berufung auf ' +
+        'dieses Recht darf Ihnen kein Nachteil hergeleitet werden.</li>' +
+      '<li>Sie haben das Recht, sich <b>rechtlich vertreten</b> zu lassen und einen Beistand mitzubringen.</li>' +
+      '<li>Sie können <b>Auskunft über die zu Ihnen gespeicherten Finanzdaten</b> verlangen (§ 11 Abs. 1 FORA).</li>' +
+      '<li>Unrechtmäßig erlangte Daten dürfen in keinem Verfahren verwertet werden (§ 11 Abs. 2 FORA).</li>' +
+      '<li>Kommt es später zu einer Konteneinsicht, werden Sie darüber unterrichtet; die Unterrichtung kann ' +
+        'nur auf richterliche Anordnung um bis zu 72 Stunden aufgeschoben werden (§ 6 Abs. 6 FORA).</li>' +
+      '<li>Gegen Sicherungsmaßnahmen steht Ihnen die Beschwerde beim zuständigen Gericht offen (§ 7 Abs. 4 FORA).</li>' +
+    '</ul>' +
+
+    '<h2>' + (S.wd.length ? "10." : "9.") + ' Folgen des Nichterscheinens</h2>' +
+    '<p>Die Teilnahme an dieser Anhörung ist freiwillig. Erscheinen Sie nicht und teilen Sie auch keinen ' +
+    'Verhinderungsgrund mit, bleibt der Behörde nur die Auswertung der ihr vorliegenden Daten. Sie wird in ' +
+    'diesem Fall beim zuständigen Gericht die Anordnung der Einsicht in Ihre Kontobewegungen nach § 6 Abs. 3 ' +
+    'FORA beantragen und, soweit die Sicherung der Steuerforderung dies erfordert, Maßnahmen nach § 7 FORA ' +
+    'prüfen. Vorsätzlich unrichtige Angaben gegenüber dieser Behörde sind strafbar.</p>' +
+    '<p>Für Rückfragen stehen Ihnen die oben genannte Sachbearbeitung und die angegebene Rufnummer zur ' +
+    'Verfügung. Bitte geben Sie bei jeder Mitteilung das Aktenzeichen an.</p>' +
+
     '<div class="sigs">' +
       sig(h(S.meta.agent), "Special Agent" + (doc.badge ? ", Dienstnummer " + h(doc.badge) : "") + "<br>Financial Crimes Division") +
       '<div class="stempel">Dienst-<br>siegel</div>' +
     '</div>' +
+
     '<div class="cut"><span>Abtrennen und zurücksenden</span></div>' +
-    '<p class="small"><b>Empfangsbestätigung</b> &ndash; Aktenzeichen ' + h(S.meta.az || "ohne Az.") +
-    '<br>Die Vorladung zum vorgenannten Termin habe ich erhalten.</p>' +
+    '<p class="small"><b>Empfangsbestätigung und Terminmitteilung</b> &ndash; Aktenzeichen ' +
+    h(S.meta.az || "ohne Az.") + '</p>' +
+    tick(false, "Ich habe die Vorladung erhalten und nehme den Termin am " + nl(doc.hdate, "genannten Tag") +
+      " wahr.") +
+    tick(false, "Ich bin am genannten Termin verhindert und bitte um einen Ersatztermin.") +
+    tick(false, "Ich werde anwaltlich vertreten. Name der Vertretung: ______________________________") +
     '<div class="sigs" style="margin-top:5mm">' +
       sig("", "Ort, Datum") + sig("", "Unterschrift der geladenen Person") +
     '</div>';

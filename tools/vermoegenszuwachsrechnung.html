@@ -1,0 +1,896 @@
+<title>FCD Vermögenszuwachsrechnung</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Public+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+:root{
+  --paper:#E9ECF0; --card:#FBFCFD; --card-2:#F1F4F7; --field:#FFFFFF;
+  --ink:#0F1620; --ink-soft:#5A6675; --ink-faint:#8794A4;
+  --rule:#CBD3DD; --rule-strong:#A9B4C2;
+  --accent:#1E3F6B; --accent-soft:#DCE6F3;
+  --crit:#9E2B1E; --crit-soft:#F6E1DD;
+  --warn:#8F6412; --warn-soft:#F7EBD3;
+  --ok:#2A6A4A; --ok-soft:#DCEDE3;
+  --on-accent:#FBFCFD;
+  color-scheme:light;
+  --shadow:0 1px 0 rgba(15,22,32,.03), 0 10px 24px -18px rgba(15,22,32,.5);
+  --mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+  --body:"Public Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  --disp:"Archivo","Public Sans",-apple-system,sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#0C1119; --card:#141B24; --card-2:#19222D; --field:#101822;
+    --ink:#E5EAF1; --ink-soft:#98A5B4; --ink-faint:#6A7787;
+    --rule:#26303C; --rule-strong:#3A4756;
+    --accent:#8FB2DE; --accent-soft:#1A2A3D;
+    --crit:#E1796A; --crit-soft:#361D19;
+    --warn:#D6A144; --warn-soft:#332815;
+    --ok:#6CBB92; --ok-soft:#16301F;
+    --on-accent:#0C1119;
+    color-scheme:dark;
+    --shadow:0 1px 0 rgba(0,0,0,.3), 0 10px 24px -18px rgba(0,0,0,.9);
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0C1119; --card:#141B24; --card-2:#19222D; --field:#101822;
+  --ink:#E5EAF1; --ink-soft:#98A5B4; --ink-faint:#6A7787;
+  --rule:#26303C; --rule-strong:#3A4756;
+  --accent:#8FB2DE; --accent-soft:#1A2A3D;
+  --crit:#E1796A; --crit-soft:#361D19;
+  --warn:#D6A144; --warn-soft:#332815;
+  --ok:#6CBB92; --ok-soft:#16301F;
+  --on-accent:#0C1119;
+  color-scheme:dark;
+  --shadow:0 1px 0 rgba(0,0,0,.3), 0 10px 24px -18px rgba(0,0,0,.9);
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font-family:var(--body); font-size:15px; line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3{font-family:var(--disp); text-wrap:balance; margin:0}
+input,select,textarea,button{font:inherit; color:inherit}
+::selection{background:var(--accent-soft)}
+:focus-visible{outline:2px solid var(--accent); outline-offset:2px; border-radius:2px}
+
+.wrap{max-width:1440px; margin:0 auto; padding:0 24px 80px}
+
+/* ---------- Kopf ---------- */
+.masthead{
+  border-bottom:2px solid var(--ink); margin-bottom:28px; padding:26px 0 18px;
+  display:flex; gap:32px; align-items:flex-start; justify-content:space-between; flex-wrap:wrap;
+}
+.seal{display:flex; gap:14px; align-items:flex-start}
+.seal svg{flex:none; margin-top:3px}
+.seal > div{min-width:0}
+.agency{
+  font-family:var(--disp); font-weight:700; font-size:11.5px; letter-spacing:.14em;
+  text-transform:uppercase; color:var(--ink-soft); line-height:1.5;
+}
+.agency b{color:var(--ink); font-weight:800; display:block; letter-spacing:.1em; font-size:12.5px}
+h1{font-size:clamp(24px,3.4vw,38px); font-weight:800; letter-spacing:-.02em; line-height:1.05;
+  margin-top:10px; hyphens:auto; overflow-wrap:break-word}
+.sub{color:var(--ink-soft); font-size:14px; max-width:56ch; margin-top:8px}
+.stamp{
+  flex:none; transform:rotate(-4deg); border:2px solid var(--crit); color:var(--crit);
+  padding:8px 14px; border-radius:3px; text-align:center; font-family:var(--disp);
+  text-transform:uppercase; letter-spacing:.1em; opacity:.9;
+}
+.stamp .s1{font-size:10px; font-weight:600; letter-spacing:.18em}
+.stamp .s2{font-size:17px; font-weight:800; letter-spacing:.06em; margin-top:2px}
+.stamp .s3{font-size:9.5px; font-weight:500; letter-spacing:.14em; margin-top:3px; opacity:.85}
+
+/* ---------- Aktenkopf ---------- */
+.dossier{
+  min-width:0;
+  background:var(--card); border:1px solid var(--rule); border-radius:4px; box-shadow:var(--shadow);
+  padding:16px 18px; display:grid; gap:14px 22px; margin-bottom:22px;
+  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+}
+label.f{display:flex; flex-direction:column; gap:5px}
+label.f > span{
+  font-family:var(--disp); font-size:10.5px; font-weight:600; letter-spacing:.12em;
+  text-transform:uppercase; color:var(--ink-faint);
+}
+input[type=text],input[type=number]{
+  background:var(--field); border:1px solid var(--rule); border-radius:3px;
+  padding:7px 9px; width:100%; min-width:0;
+}
+input[type=text]:hover,input[type=number]:hover{border-color:var(--rule-strong)}
+.num{font-family:var(--mono); font-variant-numeric:tabular-nums; text-align:right; font-size:14px}
+
+/* ---------- Raster ---------- */
+.grid{display:grid; grid-template-columns:minmax(0,1fr) 400px; gap:24px; align-items:start}
+@media (max-width:1080px){.grid{grid-template-columns:minmax(0,1fr)}}
+
+section.card{
+  background:var(--card); border:1px solid var(--rule); border-radius:4px;
+  box-shadow:var(--shadow); margin-bottom:18px; overflow:hidden;
+}
+.card > header{
+  display:flex; align-items:baseline; gap:12px; padding:13px 18px;
+  border-bottom:1px solid var(--rule); background:var(--card-2);
+}
+.step{
+  font-family:var(--disp); font-weight:800; font-size:12px; letter-spacing:.06em;
+  color:var(--on-accent); background:var(--accent); width:22px; height:22px; border-radius:3px;
+  display:grid; place-items:center; flex:none; align-self:center;
+}
+.card > header h2{font-size:15.5px; font-weight:700; letter-spacing:-.01em}
+.card > header .hint{margin-left:auto; font-size:12px; color:var(--ink-faint); text-align:right}
+.card .body{padding:14px 18px 18px}
+
+/* ---------- Tabellen ---------- */
+.scroll{overflow-x:auto; margin:0 -18px; padding:0 18px}
+table{width:100%; border-collapse:collapse; min-width:520px}
+th{
+  font-family:var(--disp); font-size:10.5px; font-weight:600; letter-spacing:.11em;
+  text-transform:uppercase; color:var(--ink-faint); text-align:left;
+  padding:0 8px 7px; border-bottom:1px solid var(--rule); white-space:nowrap;
+}
+th.r{text-align:right} th.c{text-align:center}
+td{padding:4px 8px; border-bottom:1px solid var(--rule)}
+tr:last-child td{border-bottom:0}
+td input[type=text]{border-color:transparent; background:transparent; padding:6px 8px}
+td input[type=text]:hover{border-color:var(--rule)}
+td input[type=text]:focus{background:var(--field); border-color:var(--accent)}
+td.lbl input{font-weight:500}
+.del{
+  background:transparent; border:0; color:var(--ink-faint); cursor:pointer; padding:4px 6px;
+  border-radius:3px; line-height:1; font-size:15px;
+}
+.del:hover{color:var(--crit); background:var(--crit-soft)}
+input[type=checkbox]{accent-color:var(--accent); width:15px; height:15px; cursor:pointer}
+td.c,th.c{text-align:center}
+tfoot td{
+  border-top:1px solid var(--rule-strong); border-bottom:0; padding-top:8px;
+  font-family:var(--disp); font-size:11px; font-weight:700; letter-spacing:.1em; text-transform:uppercase;
+}
+tfoot td.sum{font-family:var(--mono); font-size:14px; font-weight:600; text-align:right; letter-spacing:0; text-transform:none}
+
+.addrow{
+  margin-top:10px; background:transparent; border:1px dashed var(--rule-strong); color:var(--ink-soft);
+  border-radius:3px; padding:6px 12px; cursor:pointer; font-size:13px;
+}
+.addrow:hover{border-color:var(--accent); color:var(--accent); border-style:solid}
+
+/* ---------- Prüfvermerk ---------- */
+.panel{position:sticky; top:16px}
+@media (max-width:1080px){.panel{position:static}}
+.wf{list-style:none; margin:0; padding:0; font-variant-numeric:tabular-nums}
+.wf li{display:flex; gap:12px; align-items:baseline; padding:7px 0; border-bottom:1px dotted var(--rule)}
+.wf li .op{font-family:var(--mono); color:var(--ink-faint); width:1ch; flex:none}
+.wf li .t{flex:1; font-size:13.5px; color:var(--ink-soft)}
+.wf li .v{font-family:var(--mono); font-size:14px; white-space:nowrap}
+.wf li.total{border-bottom:0; border-top:1px solid var(--rule-strong); margin-top:2px; padding-top:9px}
+.wf li.total .t{color:var(--ink); font-weight:600; font-family:var(--disp); font-size:13px;
+  letter-spacing:.04em; text-transform:uppercase}
+.wf li.total .v{font-weight:600}
+
+.verdict{margin-top:16px; border-radius:4px; padding:14px 16px; border:1px solid}
+.verdict .k{
+  font-family:var(--disp); font-size:10.5px; font-weight:700; letter-spacing:.14em;
+  text-transform:uppercase; opacity:.85;
+}
+.verdict .amount{font-family:var(--mono); font-size:26px; font-weight:600; letter-spacing:-.02em; margin:4px 0 2px}
+.verdict .note{font-size:12.5px; line-height:1.45}
+.v-ok{background:var(--ok-soft); border-color:var(--ok); color:var(--ok)}
+.v-warn{background:var(--warn-soft); border-color:var(--warn); color:var(--warn)}
+.v-crit{background:var(--crit-soft); border-color:var(--crit); color:var(--crit)}
+
+.kpis{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:14px}
+.kpi{background:var(--card-2); border:1px solid var(--rule); border-radius:3px; padding:10px 12px}
+.kpi .k{font-family:var(--disp); font-size:9.5px; font-weight:600; letter-spacing:.11em;
+  text-transform:uppercase; color:var(--ink-faint)}
+.kpi .v{font-family:var(--mono); font-size:16px; font-weight:600; margin-top:3px; font-variant-numeric:tabular-nums}
+
+/* Vorsatz-Balken */
+.meter{height:8px; border-radius:99px; background:var(--card-2); border:1px solid var(--rule);
+  overflow:hidden; margin:10px 0 6px}
+.meter i{display:block; height:100%; background:var(--accent); transition:width .25s ease}
+@media (prefers-reduced-motion: reduce){.meter i{transition:none}}
+.flags{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:9px}
+.flags li{display:flex; gap:10px; align-items:flex-start; font-size:13.5px}
+.flags label{flex:1; cursor:pointer}
+.flags .w{font-family:var(--mono); font-size:11.5px; color:var(--ink-faint); white-space:nowrap}
+.auto{color:var(--ink-soft); font-size:12.5px}
+.auto b{font-family:var(--mono); color:var(--ink); font-weight:600}
+
+/* Aktenvermerk */
+.memo{width:100%; min-height:340px; resize:vertical; background:var(--field);
+  border:1px solid var(--rule); border-radius:3px; padding:14px;
+  font-family:var(--mono); font-size:12.5px; line-height:1.55; white-space:pre; overflow-x:auto}
+.tools{display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-bottom:12px}
+button.act{
+  background:var(--accent); color:var(--on-accent); border:1px solid var(--accent); border-radius:3px;
+  padding:8px 15px; cursor:pointer; font-size:13.5px; font-weight:500;
+}
+button.act:hover{filter:brightness(1.08)}
+button.ghost{background:transparent; color:var(--ink-soft); border:1px solid var(--rule-strong)}
+button.ghost:hover{color:var(--accent); border-color:var(--accent)}
+.toast{font-size:12.5px; color:var(--ok); opacity:0; transition:opacity .2s}
+.toast.on{opacity:1}
+.legal{color:var(--ink-faint); font-size:12px; margin-top:22px; max-width:70ch; line-height:1.5}
+.legal code{font-family:var(--mono); font-size:11.5px}
+
+@media (max-width:620px){
+  .wrap{padding:0 14px 60px}
+  .masthead{gap:18px; padding-top:20px}
+  .seal{gap:11px}
+  .stamp{transform:rotate(-3deg) scale(.88); transform-origin:left center}
+  .dossier{grid-template-columns:1fr; gap:11px}
+  .kpis{grid-template-columns:1fr}
+  .card > header{flex-wrap:wrap; row-gap:2px}
+  .card > header .hint{margin-left:0; flex-basis:100%; text-align:left}
+}
+
+@media print{
+  body{background:#fff}
+  .tools,.addrow,.del,.stamp{display:none}
+  .grid{grid-template-columns:1fr}
+  section.card{break-inside:avoid; box-shadow:none}
+  .memo{min-height:0; height:auto}
+}
+</style>
+
+<div class="wrap" lang="de">
+
+<div class="masthead">
+  <div class="seal">
+    <svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true">
+      <circle cx="20" cy="20" r="18.5" fill="none" stroke="currentColor" stroke-width="1.2"/>
+      <circle cx="20" cy="20" r="14.5" fill="none" stroke="currentColor" stroke-width=".6"/>
+      <path d="M20 8.5 L29 12.5 V21 c0 5.6-4 9.2-9 10.9-5-1.7-9-5.3-9-10.9v-8.5z"
+            fill="none" stroke="currentColor" stroke-width="1.4"/>
+      <path d="M15 20.4 l3.6 3.6 L25.4 17" fill="none" stroke="currentColor" stroke-width="1.6"
+            stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <div>
+      <div class="agency"><b>Department of Homeland Security</b>Financial Crimes Division &middot; Austin Field Office</div>
+      <h1>Vermögens&shy;zuwachs&shy;rechnung</h1>
+      <p class="sub">Ermittlungswerkzeug zur Feststellung eines Missverhältnisses zwischen erfassten
+      Einkünften und nachgewiesenem Vermögen. Grundlage jedes Antrags auf Konteneinsicht.</p>
+    </div>
+  </div>
+  <div class="stamp" aria-hidden="true">
+    <div class="s1">Rechtsgrundlage</div>
+    <div class="s2">FORA § 4 IV</div>
+    <div class="s3">Dokumentationspflicht</div>
+  </div>
+</div>
+
+<div class="dossier">
+  <label class="f"><span>Aktenzeichen</span><input type="text" id="m_az" placeholder="DHS-FCD-2026-0000"></label>
+  <label class="f"><span>Betroffene Person</span><input type="text" id="m_person" placeholder="Nachname, Vorname"></label>
+  <label class="f"><span>Prüfzeitraum</span><input type="text" id="m_zeitraum" placeholder="Zyklus 112 – 123"></label>
+  <label class="f"><span>Abrechnungszyklen</span><input type="text" id="m_zyklen" class="num" value="12"></label>
+  <label class="f"><span>Nettogehalt je Zyklus</span><input type="text" id="m_paycheck" class="num" value="0"></label>
+  <label class="f"><span>Ermittlungsführung</span><input type="text" id="m_agent" placeholder="SA Nachname, Dienstnr."></label>
+</div>
+
+<div class="grid">
+<div>
+
+  <section class="card">
+    <header>
+      <div class="step">A</div>
+      <h2>Vermögensaufstellung</h2>
+      <div class="hint">„erfasst“ = für das Steuertool sichtbar</div>
+    </header>
+    <div class="body">
+      <div class="scroll">
+        <table id="t_assets">
+          <thead><tr>
+            <th style="width:38%">Position</th>
+            <th class="c" style="width:9%">erfasst</th>
+            <th class="r">Anfangsbestand</th>
+            <th class="r">Endbestand</th>
+            <th style="width:34px"></th>
+          </tr></thead>
+          <tbody></tbody>
+          <tfoot><tr>
+            <td>Summe</td><td></td>
+            <td class="sum" id="sum_start">–</td>
+            <td class="sum" id="sum_end">–</td><td></td>
+          </tr></tfoot>
+        </table>
+      </div>
+      <button class="addrow" data-add="assets">+ Position hinzufügen</button>
+    </div>
+  </section>
+
+  <section class="card">
+    <header>
+      <div class="step">B</div>
+      <h2>Ausgaben im Prüfzeitraum</h2>
+      <div class="hint">verbrauchte Mittel, die kein Vermögen bilden</div>
+    </header>
+    <div class="body">
+      <div class="scroll">
+        <table id="t_expenses">
+          <thead><tr><th style="width:66%">Position</th><th class="r">Betrag</th><th style="width:34px"></th></tr></thead>
+          <tbody></tbody>
+          <tfoot><tr><td>Summe</td><td class="sum" id="sum_exp">–</td><td></td></tr></tfoot>
+        </table>
+      </div>
+      <button class="addrow" data-add="expenses">+ Position hinzufügen</button>
+    </div>
+  </section>
+
+  <section class="card">
+    <header>
+      <div class="step">C</div>
+      <h2>Nachgewiesene steuerfreie Zuflüsse</h2>
+      <div class="hint">§ 8 Abs. 5 FORA – nur mit Beleg ansetzen</div>
+    </header>
+    <div class="body">
+      <div class="scroll">
+        <table id="t_inflows">
+          <thead><tr><th style="width:66%">Herkunft</th><th class="r">Betrag</th><th style="width:34px"></th></tr></thead>
+          <tbody></tbody>
+          <tfoot><tr><td>Summe</td><td class="sum" id="sum_in">–</td><td></td></tr></tfoot>
+        </table>
+      </div>
+      <button class="addrow" data-add="inflows">+ Position hinzufügen</button>
+    </div>
+  </section>
+
+  <section class="card">
+    <header>
+      <div class="step">D</div>
+      <h2>Erfasste Einkünfte</h2>
+      <div class="hint">was die Behörde bereits kennt</div>
+    </header>
+    <div class="body">
+      <div class="scroll">
+        <table id="t_income">
+          <thead><tr><th style="width:66%">Quelle</th><th class="r">Betrag</th><th style="width:34px"></th></tr></thead>
+          <tbody></tbody>
+          <tfoot><tr><td>Summe inkl. Gehalt</td><td class="sum" id="sum_inc">–</td><td></td></tr></tfoot>
+        </table>
+      </div>
+      <p class="auto" style="margin:10px 0 0">Gehalt aus dem Aktenkopf: <b id="pay_line">–</b></p>
+      <button class="addrow" data-add="income">+ Position hinzufügen</button>
+    </div>
+  </section>
+
+  <section class="card">
+    <header>
+      <div class="step">E</div>
+      <h2>Steuerabgleich</h2>
+      <div class="hint">§ 3 FORA – Stichtagsvermögen</div>
+    </header>
+    <div class="body">
+      <div class="dossier" style="margin:0 0 14px; padding:0; border:0; box-shadow:none; background:transparent">
+        <label class="f"><span>Steuersatz je Zyklus (%)</span><input type="text" id="tx_rate" class="num" value="2,5"></label>
+        <label class="f"><span>Freigrenze</span><input type="text" id="tx_free" class="num" value="250.000"></label>
+      </div>
+      <ul class="wf">
+        <li><span class="op">&nbsp;</span><span class="t">Steuerlich erfasstes Vermögen zum Stichtag</span><span class="v" id="tx_reg">–</span></li>
+        <li><span class="op">&nbsp;</span><span class="t">Tatsächliches Vermögen zum Stichtag</span><span class="v" id="tx_real">–</span></li>
+        <li><span class="op">&nbsp;</span><span class="t">Steuer festgesetzt (je Zyklus)</span><span class="v" id="tx_paid">–</span></li>
+        <li><span class="op">&nbsp;</span><span class="t">Steuer geschuldet (je Zyklus)</span><span class="v" id="tx_due">–</span></li>
+        <li class="total"><span class="op">=</span><span class="t">Verkürzung, hochgerechnet</span><span class="v" id="tx_gap">–</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="card">
+    <header>
+      <div class="step">F</div>
+      <h2>Vorsatzindikatoren</h2>
+      <div class="hint">§ 8 Abs. 4 FORA</div>
+    </header>
+    <div class="body">
+      <div class="scroll">
+        <table id="t_wd">
+          <thead><tr>
+            <th style="width:32%">Abhebung / Vorgang</th>
+            <th class="r" style="width:22%">Betrag</th>
+            <th class="r" style="width:20%">Std. vor Stichtag</th>
+            <th class="c" style="width:18%">danach zurück</th>
+            <th style="width:34px"></th>
+          </tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <button class="addrow" data-add="wd">+ Vorgang hinzufügen</button>
+      <p class="auto" id="wd_summary" style="margin:12px 0 16px">Keine Vorgänge erfasst.</p>
+      <ul class="flags">
+        <li><input type="checkbox" id="fl_storage"><label for="fl_storage">Bargeld in Fahrzeug oder Behältnis gelagert, nicht in Safe oder Schließfach</label><span class="w">+15</span></li>
+        <li><input type="checkbox" id="fl_knowledge"><label for="fl_knowledge">Kenntnis des Stichtagsmechanismus in der Anhörung eingeräumt</label><span class="w">+15</span></li>
+        <li><input type="checkbox" id="fl_selective"><label for="fl_selective">Konto wird für laufende Zahlungen weiter genutzt (kein generelles Misstrauen)</label><span class="w">+5</span></li>
+        <li><input type="checkbox" id="fl_noreason"><label for="fl_noreason">Kein angezeigter Diebstahl oder Bankvorfall, der Bargeldhaltung erklärt</label><span class="w">+5</span></li>
+      </ul>
+      <div class="meter"><i id="intent_bar" style="width:0%"></i></div>
+      <p class="auto"><b id="intent_score">0</b> / 100 &middot; <span id="intent_text">Vorsatz nicht belegt</span></p>
+    </div>
+  </section>
+
+</div>
+
+<div>
+  <div class="panel">
+    <section class="card">
+      <header><div class="step">Σ</div><h2>Prüfvermerk</h2></header>
+      <div class="body">
+        <ul class="wf">
+          <li><span class="op">&nbsp;</span><span class="t">Endvermögen</span><span class="v" id="w_end">–</span></li>
+          <li><span class="op">−</span><span class="t">Anfangsvermögen</span><span class="v" id="w_start">–</span></li>
+          <li class="total"><span class="op">=</span><span class="t">Vermögenszuwachs</span><span class="v" id="w_growth">–</span></li>
+          <li><span class="op">+</span><span class="t">Ausgaben im Zeitraum</span><span class="v" id="w_exp">–</span></li>
+          <li class="total"><span class="op">=</span><span class="t">Mittelverwendung</span><span class="v" id="w_use">–</span></li>
+          <li><span class="op">−</span><span class="t">Steuerfreie Zuflüsse</span><span class="v" id="w_in">–</span></li>
+          <li class="total"><span class="op">=</span><span class="t">Erklärungsbedürftig</span><span class="v" id="w_need">–</span></li>
+          <li><span class="op">−</span><span class="t">Erfasste Einkünfte</span><span class="v" id="w_inc">–</span></li>
+        </ul>
+        <div class="verdict v-ok" id="verdict">
+          <div class="k" id="v_key">Ungeklärte Differenz</div>
+          <div class="amount" id="v_amount">–</div>
+          <div class="note" id="v_note">Werte eingeben.</div>
+        </div>
+        <div class="kpis">
+          <div class="kpi"><div class="k">Deckungsquote</div><div class="v" id="k_cover">–</div></div>
+          <div class="kpi"><div class="k">Differenz je Zyklus</div><div class="v" id="k_percycle">–</div></div>
+          <div class="kpi"><div class="k">Steuerverkürzung</div><div class="v" id="k_tax">–</div></div>
+          <div class="kpi"><div class="k">Vorsatzindex</div><div class="v" id="k_intent">–</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <header><div class="step">↧</div><h2>Fallakte</h2></header>
+      <div class="body">
+        <div class="tools">
+          <button class="act ghost" id="btn_demo">Beispielfall laden</button>
+          <button class="act ghost" id="btn_reset">Zurücksetzen</button>
+        </div>
+        <p class="auto">Eingaben werden lokal im Browser gespeichert und bleiben beim erneuten Öffnen erhalten.</p>
+      </div>
+    </section>
+  </div>
+</div>
+</div>
+
+<section class="card" style="margin-top:6px">
+  <header><div class="step">§</div><h2>Aktenvermerk</h2>
+    <div class="hint">Textfassung für die Ermittlungsakte</div>
+  </header>
+  <div class="body">
+    <div class="tools">
+      <button class="act" id="btn_copy">Als Codeblock kopieren</button>
+      <button class="act ghost" id="btn_print">Drucken / PDF</button>
+      <span class="toast" id="toast">Kopiert.</span>
+    </div>
+    <textarea class="memo" id="memo" readonly spellcheck="false"></textarea>
+  </div>
+</section>
+
+<p class="legal">
+  Bewertungsschwellen: eine ungeklärte Differenz bis <code>5 %</code> der erfassten Einkünfte gilt als
+  Erfassungsungenauigkeit, bis <code>25 %</code> als prüfungsbedürftig, darüber als konkreter Verdacht
+  im Sinne des § 6 Abs. 1 FORA. Die Rechnung ersetzt keinen Beweis: sie beziffert die Lücke, die die
+  betroffene Person in der Anhörung nach § 5 FORA erklären kann. Fiktives Regelwerk eines Roleplay-Servers,
+  kein Bezug zu geltendem Recht.
+</p>
+
+</div>
+
+<script>
+"use strict";
+
+const DEFAULTS = () => ({
+  meta:{az:"",person:"",zeitraum:"",zyklen:"12",paycheck:"0",agent:""},
+  assets:[
+    {label:"Bankguthaben",           reg:true,  start:"0", end:"0"},
+    {label:"Bargeld (festgestellt)", reg:false, start:"0", end:"0"},
+    {label:"Fahrzeuge",              reg:true,  start:"0", end:"0"},
+    {label:"Immobilien",             reg:true,  start:"0", end:"0"},
+    {label:"Unternehmensanteile",    reg:true,  start:"0", end:"0"},
+    {label:"Sonstige Werte",         reg:false, start:"0", end:"0"}
+  ],
+  expenses:[
+    {label:"Lebenshaltung",              amount:"0"},
+    {label:"Miete / Unterhalt Immobilie",amount:"0"},
+    {label:"Bußgelder, Kautionen",       amount:"0"},
+    {label:"Sonstiger Verbrauch",        amount:"0"}
+  ],
+  inflows:[
+    {label:"Kredit / Finanzierung (Vertrag)", amount:"0"},
+    {label:"Schenkung (dokumentiert)",        amount:"0"},
+    {label:"Erbschaft",                       amount:"0"},
+    {label:"Verkaufserlöse aus Altvermögen",  amount:"0"}
+  ],
+  income:[
+    {label:"Dokumentierte Nebeneinkünfte", amount:"0"},
+    {label:"Gewerbeerträge (angemeldet)",  amount:"0"}
+  ],
+  wd:[],
+  tax:{rate:"2,5", free:"250.000"},
+  flags:{storage:false, knowledge:false, selective:false, noreason:false}
+});
+
+const DEMO = () => ({
+  meta:{az:"DHS-FCD-2026-0147", person:"Vasquez, M. – Leiter Rettungsdienst",
+        zeitraum:"Zyklus 112 – 123", zyklen:"12", paycheck:"18.500", agent:"SA Brennan, 4471"},
+  assets:[
+    {label:"Bankguthaben",           reg:true,  start:"42.000",  end:"61.000"},
+    {label:"Bargeld (festgestellt)", reg:false, start:"0",       end:"480.000"},
+    {label:"Fahrzeuge",              reg:true,  start:"85.000",  end:"610.000"},
+    {label:"Immobilien",             reg:true,  start:"0",       end:"950.000"},
+    {label:"Unternehmensanteile",    reg:true,  start:"0",       end:"0"},
+    {label:"Sonstige Werte",         reg:false, start:"0",       end:"0"}
+  ],
+  expenses:[
+    {label:"Lebenshaltung",              amount:"90.000"},
+    {label:"Miete / Unterhalt Immobilie",amount:"0"},
+    {label:"Bußgelder, Kautionen",       amount:"12.000"},
+    {label:"Sonstiger Verbrauch",        amount:"25.000"}
+  ],
+  inflows:[
+    {label:"Hypothek Immobilie (Vertrag liegt vor)", amount:"700.000"},
+    {label:"Schenkung (dokumentiert)",               amount:"0"},
+    {label:"Erbschaft",                              amount:"0"},
+    {label:"Verkaufserlöse aus Altvermögen",         amount:"45.000"}
+  ],
+  income:[
+    {label:"Dokumentierte Nebeneinkünfte", amount:"0"},
+    {label:"Gewerbeerträge (angemeldet)",  amount:"0"}
+  ],
+  wd:[
+    {label:"Abhebung Bank Downtown", amount:"120.000", hours:"2",  back:true},
+    {label:"Abhebung Bank Downtown", amount:"140.000", hours:"1",  back:true},
+    {label:"Abhebung ATM Rockford",  amount:"95.000",  hours:"4",  back:true},
+    {label:"Abhebung Bank Downtown", amount:"125.000", hours:"3",  back:false}
+  ],
+  tax:{rate:"2,5", free:"250.000"},
+  flags:{storage:true, knowledge:true, selective:true, noreason:true}
+});
+
+const KEY = "fcd-vzr-v1";
+let S = load();
+
+function load(){
+  try{
+    const raw = localStorage.getItem(KEY);
+    if(raw){ const p = JSON.parse(raw); if(p && p.assets) return Object.assign(DEFAULTS(), p); }
+  }catch(e){}
+  return DEFAULTS();
+}
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
+
+/* ---------- Zahlen ---------- */
+const nf0 = new Intl.NumberFormat("de-DE",{maximumFractionDigits:0});
+const nf1 = new Intl.NumberFormat("de-DE",{minimumFractionDigits:1, maximumFractionDigits:1});
+function num(v){
+  if(typeof v === "number") return isFinite(v) ? v : 0;
+  if(!v) return 0;
+  const s = String(v).replace(/[^0-9,.-]/g,"").replace(/\./g,"").replace(",",".");
+  const n = parseFloat(s);
+  return isFinite(n) ? n : 0;
+}
+const money = n => nf0.format(Math.round(n)) + " $";
+const plain = n => nf0.format(Math.round(n));
+
+/* ---------- Tabellen ---------- */
+const TABLES = {
+  assets:{
+    el:"t_assets", blank:{label:"Neue Position", reg:true, start:"0", end:"0"},
+    row:(r,i)=>`<td class="lbl"><input type="text" data-k="assets" data-i="${i}" data-f="label" value="${esc(r.label)}"></td>
+      <td class="c"><input type="checkbox" data-k="assets" data-i="${i}" data-f="reg" ${r.reg?"checked":""} aria-label="steuerlich erfasst"></td>
+      <td><input type="text" class="num" data-k="assets" data-i="${i}" data-f="start" value="${esc(r.start)}"></td>
+      <td><input type="text" class="num" data-k="assets" data-i="${i}" data-f="end" value="${esc(r.end)}"></td>
+      <td><button class="del" data-del="assets" data-i="${i}" title="Zeile entfernen">&times;</button></td>`
+  },
+  expenses:{el:"t_expenses", blank:{label:"Neue Position", amount:"0"}, row:simpleRow("expenses")},
+  inflows: {el:"t_inflows",  blank:{label:"Neue Herkunft", amount:"0"}, row:simpleRow("inflows")},
+  income:  {el:"t_income",   blank:{label:"Neue Quelle",   amount:"0"}, row:simpleRow("income")},
+  wd:{
+    el:"t_wd", blank:{label:"Abhebung", amount:"0", hours:"0", back:false},
+    row:(r,i)=>`<td class="lbl"><input type="text" data-k="wd" data-i="${i}" data-f="label" value="${esc(r.label)}"></td>
+      <td><input type="text" class="num" data-k="wd" data-i="${i}" data-f="amount" value="${esc(r.amount)}"></td>
+      <td><input type="text" class="num" data-k="wd" data-i="${i}" data-f="hours" value="${esc(r.hours)}"></td>
+      <td class="c"><input type="checkbox" data-k="wd" data-i="${i}" data-f="back" ${r.back?"checked":""} aria-label="danach zurückgezahlt"></td>
+      <td><button class="del" data-del="wd" data-i="${i}" title="Zeile entfernen">&times;</button></td>`
+  }
+};
+function simpleRow(k){
+  return (r,i)=>`<td class="lbl"><input type="text" data-k="${k}" data-i="${i}" data-f="label" value="${esc(r.label)}"></td>
+    <td><input type="text" class="num" data-k="${k}" data-i="${i}" data-f="amount" value="${esc(r.amount)}"></td>
+    <td><button class="del" data-del="${k}" data-i="${i}" title="Zeile entfernen">&times;</button></td>`;
+}
+function esc(s){ return String(s==null?"":s).replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;"); }
+
+function renderTable(k){
+  const cfg = TABLES[k];
+  const tb = document.getElementById(cfg.el).querySelector("tbody");
+  tb.innerHTML = S[k].map((r,i)=>`<tr>${cfg.row(r,i)}</tr>`).join("") ||
+    (k==="wd" ? `<tr><td colspan="5" style="color:var(--ink-faint);padding:12px 8px">Noch keine Vorgänge erfasst.</td></tr>` : "");
+}
+function renderAll(){
+  Object.keys(TABLES).forEach(renderTable);
+  const m = S.meta;
+  set("m_az",m.az); set("m_person",m.person); set("m_zeitraum",m.zeitraum);
+  set("m_zyklen",m.zyklen); set("m_paycheck",m.paycheck); set("m_agent",m.agent);
+  set("tx_rate",S.tax.rate); set("tx_free",S.tax.free);
+  ["storage","knowledge","selective","noreason"].forEach(f=>{
+    document.getElementById("fl_"+f).checked = !!S.flags[f];
+  });
+}
+function set(id,v){ document.getElementById(id).value = v==null?"":v; }
+const $ = id => document.getElementById(id);
+const txt = (id,v) => { $(id).textContent = v; };
+
+/* ---------- Berechnung ---------- */
+function compute(){
+  const sum = (arr,f) => arr.reduce((a,r)=>a+num(r[f]),0);
+
+  const start = sum(S.assets,"start");
+  const end   = sum(S.assets,"end");
+  const regEnd = S.assets.filter(r=>r.reg).reduce((a,r)=>a+num(r.end),0);
+  const exp   = sum(S.expenses,"amount");
+  const infl  = sum(S.inflows,"amount");
+  const cycles = Math.max(0, num(S.meta.zyklen));
+  const payTotal = cycles * num(S.meta.paycheck);
+  const incOther = sum(S.income,"amount");
+  const income = payTotal + incOther;
+
+  const growth = end - start;
+  const use    = growth + exp;
+  const need   = use - infl;
+  const gap    = need - income;
+
+  txt("sum_start", money(start)); txt("sum_end", money(end));
+  txt("sum_exp", money(exp)); txt("sum_in", money(infl)); txt("sum_inc", money(income));
+  txt("pay_line", cycles + " Zyklen × " + money(num(S.meta.paycheck)) + " = " + money(payTotal));
+
+  txt("w_end",money(end)); txt("w_start",money(start)); txt("w_growth",money(growth));
+  txt("w_exp",money(exp)); txt("w_use",money(use)); txt("w_in",money(infl));
+  txt("w_need",money(need)); txt("w_inc",money(income));
+
+  /* Steuer */
+  const rate = num(S.tax.rate)/100, free = num(S.tax.free);
+  const taxPaid = regEnd > free ? regEnd*rate : 0;
+  const taxDue  = end    > free ? end   *rate : 0;
+  const taxGap  = Math.max(0, taxDue - taxPaid) * (cycles || 1);
+  txt("tx_reg",money(regEnd)); txt("tx_real",money(end));
+  txt("tx_paid",money(taxPaid)); txt("tx_due",money(taxDue)); txt("tx_gap",money(taxGap));
+
+  /* Vorsatz */
+  const wd = S.wd;
+  let timing = 0, ret = 0, near = 0, wsum = 0;
+  if(wd.length){
+    near = wd.filter(r=>num(r.hours) <= 12).length;
+    const backs = wd.filter(r=>r.back).length;
+    wsum = sum(wd,"amount");
+    timing = Math.round(35 * near / wd.length);
+    ret    = Math.round(15 * backs / wd.length);
+    $("wd_summary").innerHTML = `<b>${near}</b> von <b>${wd.length}</b> Vorgängen liegen innerhalb von
+      12 Stunden vor dem Stichtag &middot; bewegtes Volumen <b>${money(wsum)}</b> &middot;
+      <b>${backs}</b> Rückführungen nach dem Stichtag.`;
+  } else {
+    $("wd_summary").textContent = "Keine Vorgänge erfasst.";
+  }
+  const cashEnd = S.assets.filter(r=>!r.reg).reduce((a,r)=>a+num(r.end),0);
+  const cashShare = end > 0 ? cashEnd/end : 0;
+  const cashPts = cashShare >= 0.5 ? 10 : cashShare >= 0.25 ? 5 : 0;
+  const f = S.flags;
+  let score = timing + ret + cashPts +
+    (f.storage?15:0) + (f.knowledge?15:0) + (f.selective?5:0) + (f.noreason?5:0);
+  score = Math.min(100, score);
+  const band = score >= 80 ? "Vorsatz tragfähig belegt (§ 8 Abs. 4 FORA)"
+             : score >= 60 ? "Vorsatz naheliegend, Beweisführung möglich"
+             : score >= 30 ? "Anhaltspunkte vorhanden, Beweislage dünn"
+             : "Vorsatz nicht belegt";
+  $("intent_bar").style.width = score + "%";
+  $("intent_bar").style.background = score>=60 ? "var(--crit)" : score>=30 ? "var(--warn)" : "var(--accent)";
+  txt("intent_score", score); txt("intent_text", band);
+
+  /* Bewertung */
+  const ratio = income > 0 ? gap/income : (gap > 0 ? Infinity : 0);
+  let cls, key, note;
+  if(gap <= 0){
+    cls="v-ok"; key="Keine ungeklärte Differenz";
+    note="Der Vermögensaufbau ist durch erfasste Einkünfte und belegte Zuflüsse gedeckt. Prüfung nach § 5 Abs. 4 FORA einzustellen.";
+  } else if(income > 0 && ratio <= 0.05){
+    cls="v-ok"; key="Ungeklärte Differenz – unauffällig";
+    note="Die Abweichung liegt unter 5 % der erfassten Einkünfte und ist im Rahmen der Erfassungsgenauigkeit. Kein Anlass für weitere Maßnahmen.";
+  } else if(income > 0 && ratio <= 0.25){
+    cls="v-warn"; key="Ungeklärte Differenz – prüfungsbedürftig";
+    note="Die Abweichung rechtfertigt eine Anhörung nach § 5 FORA, für sich genommen aber noch keinen Antrag auf Konteneinsicht.";
+  } else {
+    cls="v-crit"; key="Ungeklärte Differenz – konkreter Verdacht";
+    note="Missverhältnis über 25 % der erfassten Einkünfte. Tatsächliche Anhaltspunkte im Sinne des § 6 Abs. 1 FORA liegen vor; Anhörung und, bei fehlender Erklärung, Antrag auf Einsicht in die Kontobewegungen sind begründet.";
+  }
+  const v = $("verdict");
+  v.className = "verdict " + cls;
+  txt("v_key", key); txt("v_amount", money(gap)); txt("v_note", note);
+
+  txt("k_cover", income>0 && need>0 ? nf1.format(Math.min(999, income/need*100)) + " %" : (need<=0 ? "100,0 %" : "0,0 %"));
+  txt("k_percycle", cycles>0 ? money(gap/cycles) : "–");
+  txt("k_tax", money(taxGap));
+  txt("k_intent", score + " / 100");
+
+  memo({start,end,regEnd,exp,infl,income,payTotal,incOther,growth,use,need,gap,cycles,
+        rate,free,taxPaid,taxDue,taxGap,score,band,key,note,near,wsum,cashEnd,cashShare});
+  save();
+}
+
+/* ---------- Aktenvermerk ---------- */
+function memo(d){
+  const W = 62;
+  const line = (l,v) => l.padEnd(W-18,".") + String(v).padStart(18);
+  const rule = c => c.repeat(W);
+  const m = S.meta;
+  const L = [];
+  L.push(rule("="));
+  L.push("DEPARTMENT OF HOMELAND SECURITY");
+  L.push("Financial Crimes Division \u00b7 Austin Field Office");
+  L.push(rule("="));
+  L.push("");
+  L.push("VERM\u00d6GENSZUWACHSRECHNUNG nach \u00a7 4 Abs. 4 FORA");
+  L.push("");
+  L.push("Aktenzeichen........: " + (m.az || "-"));
+  L.push("Betroffene Person...: " + (m.person || "-"));
+  L.push("Pr\u00fcfzeitraum........: " + (m.zeitraum || "-") + "  (" + d.cycles + " Zyklen)");
+  L.push("Ermittlungsf\u00fchrung..: " + (m.agent || "-"));
+  L.push("");
+  L.push(rule("-"));
+  L.push("I. VERM\u00d6GENSAUFSTELLUNG");
+  L.push(rule("-"));
+  L.push("Position".padEnd(30) + "erf." + "Anfang".padStart(13) + "Ende".padStart(15));
+  S.assets.forEach(r=>{
+    L.push(String(r.label).slice(0,29).padEnd(30) + (r.reg ? " ja " : " \u2013  ") +
+      plain(num(r.start)).padStart(13) + plain(num(r.end)).padStart(15));
+  });
+  L.push(rule("-"));
+  L.push("Summe".padEnd(34) + plain(d.start).padStart(13) + plain(d.end).padStart(15));
+  L.push("");
+  L.push(rule("-"));
+  L.push("II. BERECHNUNG");
+  L.push(rule("-"));
+  L.push(line("Endverm\u00f6gen", money(d.end)));
+  L.push(line("./. Anfangsverm\u00f6gen", money(d.start)));
+  L.push(line("=   Verm\u00f6genszuwachs", money(d.growth)));
+  L.push(line("+   Ausgaben im Zeitraum", money(d.exp)));
+  L.push(line("=   Mittelverwendung", money(d.use)));
+  L.push(line("./. steuerfreie Zufl\u00fcsse", money(d.infl)));
+  L.push(line("=   erkl\u00e4rungsbed\u00fcrftig", money(d.need)));
+  L.push(line("./. erfasste Eink\u00fcnfte", money(d.income)));
+  L.push(rule("-"));
+  L.push(line("=   UNGEKL\u00c4RTE DIFFERENZ", money(d.gap)));
+  L.push(rule("-"));
+  L.push("");
+  L.push("III. STEUERABGLEICH (\u00a7 3 FORA)");
+  L.push(line("Steuersatz je Zyklus", nf1.format(num(S.tax.rate)) + " %"));
+  L.push(line("Freigrenze", money(d.free)));
+  L.push(line("erfasstes Verm\u00f6gen", money(d.regEnd)));
+  L.push(line("tats\u00e4chliches Verm\u00f6gen", money(d.end)));
+  L.push(line("Steuer festgesetzt/Zyklus", money(d.taxPaid)));
+  L.push(line("Steuer geschuldet/Zyklus", money(d.taxDue)));
+  L.push(line("Verk\u00fcrzung hochgerechnet", money(d.taxGap)));
+  L.push("");
+  L.push("IV. VORSATZINDIKATOREN (\u00a7 8 Abs. 4 FORA)");
+  if(S.wd.length){
+    S.wd.forEach(r=>{
+      L.push("  - " + String(r.label).slice(0,22).padEnd(23) +
+        plain(num(r.amount)).padStart(10) + " " +
+        (plain(num(r.hours)) + " h vor Stichtag").padEnd(16) +
+        (r.back ? ", zur\u00fcck" : ""));
+    });
+    L.push("  " + d.near + " von " + S.wd.length + " Vorg\u00e4ngen innerhalb 12 h vor Stichtag, " +
+      "Volumen " + money(d.wsum));
+  } else {
+    L.push("  keine Vorg\u00e4nge erfasst");
+  }
+  const fl = [];
+  if(S.flags.storage)  fl.push("Lagerung in Fahrzeug oder Beh\u00e4ltnis");
+  if(S.flags.knowledge)fl.push("Kenntnis des Stichtagsmechanismus einger\u00e4umt");
+  if(S.flags.selective)fl.push("Konto wird weiter genutzt (Selektivit\u00e4t)");
+  if(S.flags.noreason) fl.push("kein dokumentierter Anlass f\u00fcr Bargeldhaltung");
+  if(d.cashShare >= 0.25) fl.push("nicht erfasster Verm\u00f6gensanteil " +
+    nf1.format(d.cashShare*100) + " % (" + money(d.cashEnd) + ")");
+  fl.forEach(x => L.push("  - " + x));
+  L.push("  Vorsatzindex: " + d.score + " / 100 \u2013 " + d.band);
+  L.push("");
+  L.push("V. BEWERTUNG");
+  L.push("  " + d.key.toUpperCase());
+  wrap(d.note, W-2).forEach(x => L.push("  " + x));
+  L.push("");
+  L.push(rule("="));
+  L.push("Erstellt: " + new Date().toLocaleString("de-DE") + "   Az. " + (m.az || "-"));
+  L.push("Diese Aufstellung ist Grundlage der Anh\u00f6rung nach \u00a7 5 FORA und");
+  L.push("eines etwaigen Antrags nach \u00a7 6 FORA. Sie ersetzt keinen Beweis.");
+  L.push(rule("="));
+  $("memo").value = L.join("\n");
+}
+function wrap(s,w){
+  const out=[]; let cur="";
+  s.split(/\s+/).forEach(word=>{
+    if((cur+" "+word).trim().length > w){ out.push(cur.trim()); cur = word; }
+    else cur += " " + word;
+  });
+  if(cur.trim()) out.push(cur.trim());
+  return out;
+}
+
+/* ---------- Ereignisse ---------- */
+document.addEventListener("input", e=>{
+  const t = e.target;
+  if(t.dataset && t.dataset.k){
+    const {k,i,f} = t.dataset;
+    S[k][+i][f] = t.type === "checkbox" ? t.checked : t.value;
+    compute(); return;
+  }
+  const map = {m_az:["meta","az"], m_person:["meta","person"], m_zeitraum:["meta","zeitraum"],
+               m_zyklen:["meta","zyklen"], m_paycheck:["meta","paycheck"], m_agent:["meta","agent"],
+               tx_rate:["tax","rate"], tx_free:["tax","free"]};
+  if(map[t.id]){ S[map[t.id][0]][map[t.id][1]] = t.value; compute(); return; }
+  if(t.id && t.id.startsWith("fl_")){ S.flags[t.id.slice(3)] = t.checked; compute(); }
+});
+
+document.addEventListener("change", e=>{
+  const t = e.target;
+  if(t.type === "checkbox" && t.dataset && t.dataset.k){
+    S[t.dataset.k][+t.dataset.i][t.dataset.f] = t.checked; compute();
+  }
+  if(t.id && t.id.startsWith("fl_")){ S.flags[t.id.slice(3)] = t.checked; compute(); }
+});
+
+document.addEventListener("blur", e=>{
+  const t = e.target;
+  if(t.classList && t.classList.contains("num") && t.value.trim() !== ""){
+    const n = num(t.value);
+    if(t.id === "tx_rate"){ t.value = nf1.format(n); S.tax.rate = t.value; }
+    else if(t.dataset && t.dataset.f === "hours"){ t.value = plain(n); S.wd[+t.dataset.i].hours = t.value; }
+    else { t.value = plain(n);
+      if(t.dataset && t.dataset.k) S[t.dataset.k][+t.dataset.i][t.dataset.f] = t.value;
+      else if(t.id === "m_zyklen") S.meta.zyklen = t.value;
+      else if(t.id === "m_paycheck") S.meta.paycheck = t.value;
+      else if(t.id === "tx_free") S.tax.free = t.value;
+    }
+    compute();
+  }
+}, true);
+
+document.addEventListener("click", e=>{
+  const add = e.target.closest("[data-add]");
+  if(add){
+    const k = add.dataset.add;
+    S[k].push(Object.assign({}, TABLES[k].blank));
+    renderTable(k); compute();
+    const rows = document.getElementById(TABLES[k].el).querySelectorAll("tbody tr");
+    const last = rows[rows.length-1];
+    if(last) last.querySelector("input").select();
+    return;
+  }
+  const del = e.target.closest("[data-del]");
+  if(del){
+    const k = del.dataset.del;
+    S[k].splice(+del.dataset.i, 1);
+    renderTable(k); compute();
+  }
+});
+
+$("btn_demo").addEventListener("click", ()=>{ S = DEMO(); renderAll(); compute(); });
+$("btn_reset").addEventListener("click", ()=>{ S = DEFAULTS(); renderAll(); compute(); });
+$("btn_print").addEventListener("click", ()=> window.print());
+$("btn_copy").addEventListener("click", async ()=>{
+  const text = "```\n" + $("memo").value + "\n```";
+  const toast = $("toast");
+  try{
+    await navigator.clipboard.writeText(text);
+    toast.textContent = "Kopiert."; toast.className = "toast on";
+  }catch(err){
+    const ta = $("memo"); ta.focus(); ta.select();
+    toast.textContent = "Text markiert – mit Strg+C kopieren.";
+    toast.style.color = "var(--warn)"; toast.className = "toast on";
+  }
+  setTimeout(()=> toast.className = "toast", 2600);
+});
+
+renderAll();
+compute();
+</script>
